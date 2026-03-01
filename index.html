@@ -5,35 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
     <style>
-        /* 直接把样式写在这里，防止浏览器缓存 style.css 导致乱码 */
-        body { background: #f7f8fa; margin: 0; padding-bottom: 80px; font-family: sans-serif; }
-        .header { background: #1e90ff; color: white; padding: 40px 20px; text-align: left; }
-        .header h1 { margin: 0; font-size: 24px; }
-        .container { padding: 15px; margin-top: -20px; background: #f7f8fa; border-radius: 20px 20px 0 0; }
-        
+        /* 核心样式：确保 App 感 */
+        body { background: #f7f8fa; margin: 0; padding-bottom: 80px; font-family: "PingFang SC", sans-serif; }
+        .header { background: #007aff; color: white; padding: 45px 20px 30px; text-align: left; }
+        .header h1 { margin: 0; font-size: 26px; font-weight: bold; }
+        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.9; }
+
+        /* 内容区容器 */
+        .container { padding: 0 15px; margin-top: -15px; background: #f7f8fa; border-radius: 20px 20px 0 0; }
+
         /* 喇叭公告 */
-        .notice-card { background: #fff; border-radius: 12px; padding: 12px; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; }
-        
-        /* 彩色方块区 */
-        .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .grid-item { padding: 15px; border-radius: 12px; color: white; text-align: center; font-weight: bold; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .notice-card { 
+            background: #fff; border-radius: 12px; padding: 12px 15px; 
+            display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;
+        }
+
+        /* 重点：彩色公告专区 (对标猪猪软件库) */
+        .section-title { font-size: 16px; font-weight: bold; margin: 15px 0 10px; display: flex; align-items: center; }
+        .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .grid-item { 
+            padding: 18px 10px; border-radius: 15px; color: white; text-align: center; 
+            font-weight: bold; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            display: flex; flex-direction: column; justify-content: center;
+        }
         .bg-green { background: linear-gradient(135deg, #42d392, #35ab74); }
-        .bg-yellow { background: linear-gradient(135deg, #ffcc33, #ffb300); }
-        .bg-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-        .bg-red { background: linear-gradient(135deg, #ff5f6d, #ffc371); }
+        .bg-yellow { background: linear-gradient(135deg, #ffcc33, #ff9900); }
+        .bg-blue { background: linear-gradient(135deg, #4facfe, #007aff); }
+        .bg-red { background: linear-gradient(135deg, #ff5f6d, #ff3b30); }
 
-        /* 软件列表卡片 */
-        .software-card { background: #fff; border-radius: 15px; padding: 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-        .get-btn { background: #007aff; color: #fff; border: none; padding: 8px 22px; border-radius: 20px; font-weight: bold; }
+        /* 软件卡片 */
+        .software-card { 
+            background: #fff; border-radius: 15px; padding: 20px; margin-bottom: 12px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03); 
+        }
+        .sw-name { font-size: 16px; font-weight: 600; color: #333; }
+        .get-btn { 
+            background: #007aff; color: #fff; border: none; padding: 8px 24px; 
+            border-radius: 20px; font-weight: bold; font-size: 14px; 
+        }
 
-        /* 底部导航栏：强制横向 */
+        /* 底部导航栏 */
         .footer-nav { 
             position: fixed; bottom: 0; left: 0; right: 0; height: 65px; 
-            background: #fff; display: flex !important; border-top: 1px solid #eee; z-index: 9999; 
+            background: #fff; display: flex !important; border-top: 1px solid #eee; z-index: 999; 
         }
         .nav-item { 
             flex: 1; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; font-size: 12px; color: #888; text-decoration: none; 
+            justify-content: center; font-size: 12px; color: #8e8e93; text-decoration: none; 
         }
         .nav-item.active { color: #007aff; }
     </style>
@@ -41,53 +60,54 @@
 <body>
 
     <div class="header">
-        <h1>心做资源库</h1>
-        <p>欢迎使用最新同步版</p>
+        <h1>首页</h1>
+        <p>欢迎使用心做资源库</p>
     </div>
 
     <div class="container">
         <div class="notice-card">
-            <span style="font-size:18px;">📢</span>
-            <p id="announcement" style="margin:0 0 0 10px; font-size:14px; color:#555;">同步中...</p>
+            <span style="font-size:20px;">📢</span>
+            <p id="announcement" style="margin:0 0 0 10px; font-size:14px; color:#666;">同步数据中...</p>
         </div>
         
-        <h3 style="font-size:16px; margin:10px 0;">公告专区🤖</h3>
+        <div class="section-title">公告专区 🤖</div>
         <div class="grid-box">
-            <div class="grid-item bg-green">永久地址(1)</div>
-            <div class="grid-item bg-yellow">永久地址(2)</div>
-            <div class="grid-item bg-blue">报毒问题</div>
-            <div class="grid-item bg-red">问题反馈</div>
+            <div class="grid-item bg-green">永久地址(1)<br><small style="font-weight:normal;font-size:10px;">必须收藏</small></div>
+            <div class="grid-item bg-yellow">永久地址(2)<br><small style="font-weight:normal;font-size:10px;">必须收藏</small></div>
+            <div class="grid-item bg-blue">报毒问题<br><small style="font-weight:normal;font-size:10px;">安装必看</small></div>
+            <div class="grid-item bg-red">问题反馈<br><small style="font-weight:normal;font-size:10px;">在线交流</small></div>
         </div>
 
+        <div class="section-title">最新资源 📦</div>
         <div id="software-list"></div>
     </div>
 
     <div class="footer-nav">
-        <div class="nav-item active"><span>🏠</span><span>首页</span></div>
-        <div class="nav-item"><span>📋</span><span>软件</span></div>
-        <div class="nav-item"><span>🧭</span><span>工具</span></div>
-        <div class="nav-item"><span>👤</span><span>我的</span></div>
+        <div class="nav-item active"><span style="font-size:22px;">🏠</span><span>首页</span></div>
+        <div class="nav-item"><span style="font-size:22px;">📋</span><span>软件</span></div>
+        <div class="nav-item"><span style="font-size:22px;">🧭</span><span>工具</span></div>
+        <div class="nav-item"><span style="font-size:22px;">👤</span><span>我的</span></div>
     </div>
 
     <script>
-        // 加上随机数防止 data.json 被缓存
-        fetch('data.json?v=' + Math.random())
+        // 自动加载数据
+        fetch('data.json?t=' + Date.now())
             .then(res => res.json())
             .then(data => {
                 document.getElementById('announcement').innerText = data.announcement;
                 const container = document.getElementById('software-list');
                 data.software_list.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'software-card';
-                    card.innerHTML = `
-                        <div style="font-weight:bold; color:#333;">${item.name}</div>
+                    const div = document.createElement('div');
+                    div.className = 'software-card';
+                    div.innerHTML = `
+                        <div class="sw-name">${item.name}</div>
                         <button class="get-btn" onclick="alert('提取码：${item.password || '无'}'); window.location.href='${item.url}'">获取</button>
                     `;
-                    container.appendChild(card);
+                    container.appendChild(div);
                 });
             })
-            .catch(err => {
-                document.getElementById('announcement').innerText = "数据同步失败，请检查 data.json";
+            .catch(e => {
+                document.getElementById('announcement').innerText = "加载失败，请刷新页面";
             });
     </script>
 </body>
