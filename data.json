@@ -1,0 +1,15 @@
+{
+  "announcement": "欢迎来到心做资源库！这里是最新同步的网页版。",
+  "software_list": [
+    {
+      "name": "示例软件 A",
+      "url": "https://www.baidu.com",
+      "password": "123"
+    },
+    {
+      "name": "示例软件 B",
+      "url": "https://www.google.com",
+      "password": "无"
+    }
+  ]
+}
