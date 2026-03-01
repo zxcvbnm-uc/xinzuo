@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>心做资源库</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>心 做 资 源 库</h1>
+</div>
+
+<div class="container">
+    <div class="notice-card">
+        <span class="icon">📢</span>
+        <p id="announcement">系统初始化中...</p>
+    </div>
+
+    <div id="software-list">
+        </div>
+</div>
+
+<script>
+    // 自动读取你仓库里的 data.json
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('announcement').innerText = data.announcement;
+            const listContainer = document.getElementById('software-list');
+            
+            data.software_list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'software-card';
+                card.innerHTML = `
+                    <div class="info">
+                        <div class="name">${item.name}</div>
+                    </div>
+                    <button class="get-btn" onclick="showDownload('${item.name}', '${item.url}', '${item.password}')">获取</button>
+                `;
+                listContainer.appendChild(card);
+            });
+        });
+
+    function showDownload(name, url, pwd) {
+        alert("资源名称：" + name + "\n提取密码：" + (pwd || "无"));
+        window.location.href = url;
+    }
+</script>
+
+</body>
+</html>
