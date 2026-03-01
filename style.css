@@ -1,76 +1,109 @@
-/* 全局样式 - 仿原生App感 */
+/* 基础重置 */
 body {
-    background-color: #f7f8fa;
+    background-color: #f0f2f5;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
     color: #333;
+    padding-bottom: 80px; /* 为底部导航预留空间 */
 }
 
-/* 顶部大标题 */
+/* 顶部蓝色标题区 */
 .header {
-    background-color: #ffffff;
-    padding: 30px 20px;
+    background: linear-gradient(135deg, #1e90ff, #007aff);
+    padding: 40px 20px;
     text-align: center;
-    border-bottom: 1px solid #eee;
+    color: white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,122,255,0.2);
 }
 
 .header h1 {
     margin: 0;
-    font-size: 22px;
-    letter-spacing: 2px;
+    font-size: 24px;
+    font-weight: 600;
 }
 
-/* 容器 */
+/* 内容容器 */
 .container {
-    padding: 15px;
+    padding: 0 15px;
+    margin-top: -20px; /* 让内容往上浮动一点，产生层次感 */
 }
 
-/* 公告卡片 */
+/* 喇叭公告栏 */
 .notice-card {
-    background-color: #fff;
+    background: #ffffff;
     border-radius: 12px;
     padding: 12px 15px;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 15px;
 }
 
 .notice-card p {
     margin: 0 0 0 10px;
     font-size: 14px;
-    color: #666;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* 软件卡片列表 */
 .software-card {
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 20px;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 18px;
     margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    transition: transform 0.2s;
+}
+
+.software-card:active {
+    transform: scale(0.98); /* 点击反馈 */
 }
 
 .software-card .name {
     font-size: 16px;
     font-weight: 500;
+    color: #222;
 }
 
-/* 获取按钮 */
+/* 蓝色“获取”按钮 */
 .get-btn {
-    background-color: #007aff;
-    color: white;
+    background: #007aff;
+    color: #fff;
     border: none;
-    padding: 8px 20px;
-    border-radius: 20px;
+    padding: 8px 22px;
+    border-radius: 18px;
     font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(0,122,255,0.2);
 }
 
-.get-btn:active {
-    background-color: #0056b3;
+/* 模拟底部导航栏 */
+.footer-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-item {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+.nav-item.active {
+    color: #007aff;
 }
