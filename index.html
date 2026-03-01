@@ -4,61 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 直接把样式写在这里，防止浏览器缓存 style.css 导致乱码 */
+        body { background: #f7f8fa; margin: 0; padding-bottom: 80px; font-family: sans-serif; }
+        .header { background: #1e90ff; color: white; padding: 40px 20px; text-align: left; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .container { padding: 15px; margin-top: -20px; background: #f7f8fa; border-radius: 20px 20px 0 0; }
+        
+        /* 喇叭公告 */
+        .notice-card { background: #fff; border-radius: 12px; padding: 12px; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        
+        /* 彩色方块区 */
+        .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .grid-item { padding: 15px; border-radius: 12px; color: white; text-align: center; font-weight: bold; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .bg-green { background: linear-gradient(135deg, #42d392, #35ab74); }
+        .bg-yellow { background: linear-gradient(135deg, #ffcc33, #ffb300); }
+        .bg-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .bg-red { background: linear-gradient(135deg, #ff5f6d, #ffc371); }
+
+        /* 软件列表卡片 */
+        .software-card { background: #fff; border-radius: 15px; padding: 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .get-btn { background: #007aff; color: #fff; border: none; padding: 8px 22px; border-radius: 20px; font-weight: bold; }
+
+        /* 底部导航栏：强制横向 */
+        .footer-nav { 
+            position: fixed; bottom: 0; left: 0; right: 0; height: 65px; 
+            background: #fff; display: flex !important; border-top: 1px solid #eee; z-index: 9999; 
+        }
+        .nav-item { 
+            flex: 1; display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; font-size: 12px; color: #888; text-decoration: none; 
+        }
+        .nav-item.active { color: #007aff; }
+    </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>首页</h1>
-    <p>欢迎使用心做资源库</p>
-</div>
-
-<div class="container">
-    <div class="notice-card">
-        <span>📢</span>
-        <p id="announcement" style="margin:0 0 0 10px; font-size:14px;">加载中...</p>
+    <div class="header">
+        <h1>心做资源库</h1>
+        <p>欢迎使用最新同步版</p>
     </div>
 
-    <div id="software-list">
+    <div class="container">
+        <div class="notice-card">
+            <span style="font-size:18px;">📢</span>
+            <p id="announcement" style="margin:0 0 0 10px; font-size:14px; color:#555;">同步中...</p>
         </div>
-</div>
+        
+        <h3 style="font-size:16px; margin:10px 0;">公告专区🤖</h3>
+        <div class="grid-box">
+            <div class="grid-item bg-green">永久地址(1)</div>
+            <div class="grid-item bg-yellow">永久地址(2)</div>
+            <div class="grid-item bg-blue">报毒问题</div>
+            <div class="grid-item bg-red">问题反馈</div>
+        </div>
 
-<div class="footer-nav">
-    <div class="nav-item active">
-        <span style="font-size:20px;">🏠</span>
-        <span>首页</span>
+        <div id="software-list"></div>
     </div>
-    <div class="nav-item">
-        <span style="font-size:20px;">📋</span>
-        <span>软件</span>
-    </div>
-    <div class="nav-item">
-        <span style="font-size:20px;">🧭</span>
-        <span>工具</span>
-    </div>
-    <div class="nav-item">
-        <span style="font-size:20px;">👤</span>
-        <span>我的</span>
-    </div>
-</div>
 
-<script>
-    fetch('data.json')
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('announcement').innerText = data.announcement;
-            const container = document.getElementById('software-list');
-            data.software_list.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'software-card';
-                card.innerHTML = `
-                    <div class="name">${item.name}</div>
-                    <button class="get-btn" onclick="alert('提取码：${item.password || '无'}'); window.location.href='${item.url}'">获取</button>
-                `;
-                container.appendChild(card);
+    <div class="footer-nav">
+        <div class="nav-item active"><span>🏠</span><span>首页</span></div>
+        <div class="nav-item"><span>📋</span><span>软件</span></div>
+        <div class="nav-item"><span>🧭</span><span>工具</span></div>
+        <div class="nav-item"><span>👤</span><span>我的</span></div>
+    </div>
+
+    <script>
+        // 加上随机数防止 data.json 被缓存
+        fetch('data.json?v=' + Math.random())
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('announcement').innerText = data.announcement;
+                const container = document.getElementById('software-list');
+                data.software_list.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'software-card';
+                    card.innerHTML = `
+                        <div style="font-weight:bold; color:#333;">${item.name}</div>
+                        <button class="get-btn" onclick="alert('提取码：${item.password || '无'}'); window.location.href='${item.url}'">获取</button>
+                    `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(err => {
+                document.getElementById('announcement').innerText = "数据同步失败，请检查 data.json";
             });
-        });
-</script>
-
+    </script>
 </body>
 </html>
