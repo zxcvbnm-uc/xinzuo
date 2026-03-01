@@ -3,112 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>心做资源库</title>
+    <title>心做资源库 - Steam Edition</title>
     <style>
-        /* 核心样式：确保 App 感 */
-        body { background: #f7f8fa; margin: 0; padding-bottom: 80px; font-family: "PingFang SC", sans-serif; }
-        .header { background: #007aff; color: white; padding: 45px 20px 30px; text-align: left; }
-        .header h1 { margin: 0; font-size: 26px; font-weight: bold; }
-        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.9; }
-
-        /* 内容区容器 */
-        .container { padding: 0 15px; margin-top: -15px; background: #f7f8fa; border-radius: 20px 20px 0 0; }
-
-        /* 喇叭公告 */
-        .notice-card { 
-            background: #fff; border-radius: 12px; padding: 12px 15px; 
-            display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;
+        /* Steam 深色主题 */
+        :root {
+            --steam-blue: #1b2838;
+            --steam-dark: #171a21;
+            --steam-accent: #66c0f4;
+            --steam-card: #2a475e;
+            --text-main: #c7d5e0;
         }
 
-        /* 重点：彩色公告专区 (对标猪猪软件库) */
-        .section-title { font-size: 16px; font-weight: bold; margin: 15px 0 10px; display: flex; align-items: center; }
-        .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .grid-item { 
-            padding: 18px 10px; border-radius: 15px; color: white; text-align: center; 
-            font-weight: bold; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            display: flex; flex-direction: column; justify-content: center;
+        body { 
+            background-color: var(--steam-blue); 
+            color: var(--steam-main);
+            margin: 0; padding-bottom: 70px; font-family: "Motiva Sans", Sans-serif; 
         }
-        .bg-green { background: linear-gradient(135deg, #42d392, #35ab74); }
-        .bg-yellow { background: linear-gradient(135deg, #ffcc33, #ff9900); }
-        .bg-blue { background: linear-gradient(135deg, #4facfe, #007aff); }
-        .bg-red { background: linear-gradient(135deg, #ff5f6d, #ff3b30); }
 
-        /* 软件卡片 */
+        /* 顶部导航 */
+        .header { 
+            background: var(--steam-dark); padding: 20px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .header h1 { color: #fff; margin: 0; font-size: 22px; letter-spacing: 1px; }
+
+        /* Steam 风格大横幅（轮播位） */
+        .featured-banner {
+            width: 100%; height: 180px;
+            background: linear-gradient(to bottom, transparent, var(--steam-blue)), url('https://pic.imgdb.cn/item/656847efc458853aef11f26a.jpg');
+            background-size: cover; display: flex; align-items: flex-end; padding: 15px; box-sizing: border-box;
+        }
+        .featured-title { font-weight: bold; color: white; font-size: 18px; text-shadow: 2px 2px 4px #000; }
+
+        .container { padding: 15px; }
+
+        /* 分类标题 */
+        .section-label { color: var(--steam-accent); font-size: 14px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+
+        /* 资源列表：Steam 列表样式 */
         .software-card { 
-            background: #fff; border-radius: 15px; padding: 20px; margin-bottom: 12px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            box-shadow: 0 2px 12px rgba(0,0,0,0.03); 
+            background: rgba(0,0,0,0.2); border-radius: 4px; padding: 12px; margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid transparent; transition: 0.3s;
         }
-        .sw-name { font-size: 16px; font-weight: 600; color: #333; }
+        .software-card:active { background: var(--steam-card); border-left-color: var(--steam-accent); }
+        .sw-info { display: flex; flex-direction: column; }
+        .sw-name { color: #fff; font-size: 16px; margin-bottom: 4px; }
+        .sw-tag { color: var(--steam-accent); font-size: 11px; background: rgba(102, 192, 244, 0.1); padding: 2px 6px; width: fit-content; border-radius: 2px; }
+
         .get-btn { 
-            background: #007aff; color: #fff; border: none; padding: 8px 24px; 
-            border-radius: 20px; font-weight: bold; font-size: 14px; 
+            background: linear-gradient(to bottom, #a4d007 5%, #536904 95%);
+            color: white; border: none; padding: 8px 15px; border-radius: 2px;
+            font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        /* 底部导航栏 */
+        /* 底部导航 */
         .footer-nav { 
-            position: fixed; bottom: 0; left: 0; right: 0; height: 65px; 
-            background: #fff; display: flex !important; border-top: 1px solid #eee; z-index: 999; 
+            position: fixed; bottom: 0; left: 0; right: 0; height: 60px; 
+            background: #171a21; display: flex; border-top: 1px solid #333; 
         }
-        .nav-item { 
-            flex: 1; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; font-size: 12px; color: #8e8e93; text-decoration: none; 
-        }
-        .nav-item.active { color: #007aff; }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h1>首页</h1>
-        <p>欢迎使用心做资源库</p>
-    </div>
-
-    <div class="container">
-        <div class="notice-card">
-            <span style="font-size:20px;">📢</span>
-            <p id="announcement" style="margin:0 0 0 10px; font-size:14px; color:#666;">同步数据中...</p>
-        </div>
-        
-        <div class="section-title">公告专区 🤖</div>
-        <div class="grid-box">
-            <div class="grid-item bg-green">永久地址(1)<br><small style="font-weight:normal;font-size:10px;">必须收藏</small></div>
-            <div class="grid-item bg-yellow">永久地址(2)<br><small style="font-weight:normal;font-size:10px;">必须收藏</small></div>
-            <div class="grid-item bg-blue">报毒问题<br><small style="font-weight:normal;font-size:10px;">安装必看</small></div>
-            <div class="grid-item bg-red">问题反馈<br><small style="font-weight:normal;font-size:10px;">在线交流</small></div>
-        </div>
-
-        <div class="section-title">最新资源 📦</div>
-        <div id="software-list"></div>
-    </div>
-
-    <div class="footer-nav">
-        <div class="nav-item active"><span style="font-size:22px;">🏠</span><span>首页</span></div>
-        <div class="nav-item"><span style="font-size:22px;">📋</span><span>软件</span></div>
-        <div class="nav-item"><span style="font-size:22px;">🧭</span><span>工具</span></div>
-        <div class="nav-item"><span style="font-size:22px;">👤</span><span>我的</span></div>
-    </div>
-
-    <script>
-        // 自动加载数据
-        fetch('data.json?t=' + Date.now())
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('announcement').innerText = data.announcement;
-                const container = document.getElementById('software-list');
-                data.software_list.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'software-card';
-                    div.innerHTML = `
-                        <div class="sw-name">${item.name}</div>
-                        <button class="get-btn" onclick="alert('提取码：${item.password || '无'}'); window.location.href='${item.url}'">获取</button>
-                    `;
-                    container.appendChild(div);
-                });
-            })
-            .catch(e => {
-                document.getElementById('announcement').innerText = "加载失败，请刷新页面";
-            });
-    </script>
-</body>
-</html>
+        .nav-item { flex: 1; display: flex; flex-direction: column
