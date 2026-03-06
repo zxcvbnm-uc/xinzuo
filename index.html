@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
     <style>
-        /* 1. 整体视觉：白色背景，深色文字 */
+        /* 1. 基础设置：白色背景 */
         body { 
             margin: 0; 
-            background: #ffffff; /* 确保纯白背景 */
+            background: #ffffff; 
             color: #333333; 
             font-family: "Microsoft YaHei", sans-serif; 
             padding-bottom: 50px; 
         }
 
-        /* 2. 顶部标题：绿色加粗 */
+        /* 2. 绿色标题 */
         .top-title { 
             color: #2ecc71; 
             text-align: center; 
@@ -23,11 +23,11 @@
             padding: 25px 0; 
         }
 
-        /* 3. 蓝色圆角卡片：对应手绘图 */
+        /* 3. 蓝色圆角大卡片 */
         .card {
-            background: #5dade2; /* 这种浅蓝色非常清爽 */
+            background: #5dade2; 
             margin: 15px 20px; 
-            border-radius: 25px; /* 大圆角效果 */
+            border-radius: 25px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
@@ -38,22 +38,26 @@
             font-size: 20px;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-        
-        /* 公告栏：比普通卡片更高一些 */
-        .notice-card { 
-            height: 150px; 
-            font-size: 32px; 
-            justify-content: center; 
         }
 
+        /* 特别加高的公告卡片 */
+        .notice-card { height: 150px; font-size: 32px; justify-content: center; }
+
         /* 下载按钮的小标签 */
-        .download-btn { 
-            background: rgba(255,255,255,0.2); 
-            padding: 6px 15px; 
-            border-radius: 12px; 
-            font-size: 16px; 
+        .tag-right { background: rgba(255,255,255,0.2); padding: 6px 15px; border-radius: 12px; font-size: 16px; }
+
+        /* 底部导航栏 */
+        .nav-bar { 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+            height: 60px; 
+            background: #fff; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            border-top: 1px solid #eee; 
+            font-weight: bold;
         }
     </style>
 </head>
@@ -68,15 +72,17 @@
         <span>视频</span>
     </a>
 
-    <a href="test1.apk" class="card">
-        <span>图标  应用软件一</span>
-        <span class="download-btn">点击下载</span>
+    <a href="xinzuo_vpn.apk" class="card">
+        <span>📦 应用名称</span>
+        <span class="tag-right">下载</span>
     </a>
 
-    <a href="xinzuo_vpn.apk" class="card">
-        <span>图标  应用软件二</span>
-        <span class="download-btn">点击下载</span>
-    </a>
+    <div class="nav-bar">
+        <span>首页</span>
+        <span>商店</span>
+        <span>社区</span>
+        <span>设置</span>
+    </div>
 
 </body>
 </html>
