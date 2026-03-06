@@ -3,63 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>心做资源库 - Steam Edition</title>
+    <title>心做资源库 - Ultra</title>
     <style>
-        /* Steam 深色主题 */
+        /* --- 1. Steam x iOS 核心样式 --- */
         :root {
-            --steam-blue: #1b2838;
             --steam-dark: #171a21;
+            --steam-blue: #1b2838;
             --steam-accent: #66c0f4;
-            --steam-card: #2a475e;
-            --text-main: #c7d5e0;
+            --ios-blur: rgba(255, 255, 255, 0.1);
+            --ios-active: #007aff;
         }
 
-        body { 
-            background-color: var(--steam-blue); 
-            color: var(--steam-main);
-            margin: 0; padding-bottom: 70px; font-family: "Motiva Sans", Sans-serif; 
+        body {
+            margin: 0;
+            background-color: var(--steam-dark);
+            color: #c7d5e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 100px;
         }
 
-        /* 顶部导航 */
-        .header { 
-            background: var(--steam-dark); padding: 20px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .header h1 { color: #fff; margin: 0; font-size: 22px; letter-spacing: 1px; }
-
-        /* Steam 风格大横幅（轮播位） */
-        .featured-banner {
-            width: 100%; height: 180px;
-            background: linear-gradient(to bottom, transparent, var(--steam-blue)), url('https://pic.imgdb.cn/item/656847efc458853aef11f26a.jpg');
-            background-size: cover; display: flex; align-items: flex-end; padding: 15px; box-sizing: border-box;
-        }
-        .featured-title { font-weight: bold; color: white; font-size: 18px; text-shadow: 2px 2px 4px #000; }
-
-        .container { padding: 15px; }
-
-        /* 分类标题 */
-        .section-label { color: var(--steam-accent); font-size: 14px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
-
-        /* 资源列表：Steam 列表样式 */
-        .software-card { 
-            background: rgba(0,0,0,0.2); border-radius: 4px; padding: 12px; margin-bottom: 8px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-left: 4px solid transparent; transition: 0.3s;
-        }
-        .software-card:active { background: var(--steam-card); border-left-color: var(--steam-accent); }
-        .sw-info { display: flex; flex-direction: column; }
-        .sw-name { color: #fff; font-size: 16px; margin-bottom: 4px; }
-        .sw-tag { color: var(--steam-accent); font-size: 11px; background: rgba(102, 192, 244, 0.1); padding: 2px 6px; width: fit-content; border-radius: 2px; }
-
-        .get-btn { 
-            background: linear-gradient(to bottom, #a4d007 5%, #536904 95%);
-            color: white; border: none; padding: 8px 15px; border-radius: 2px;
-            font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        /* 顶部 Steam 风格标题 */
+        .header {
+            background: linear-gradient(to bottom, #1b2838, #171a21);
+            padding: 25px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* 底部导航 */
-        .footer-nav { 
-            position: fixed; bottom: 0; left: 0; right: 0; height: 60px; 
-            background: #171a21; display: flex; border-top: 1px solid #333; 
+        .header h1 { margin: 0; font-size: 20px; color: #fff; letter-spacing: 1px; }
+
+        /* --- 2. 用户等级卡片 (iOS 毛玻璃) --- */
+        .user-card {
+            margin: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .nav-item { flex: 1; display: flex; flex-direction: column
+
+        .user-info { display: flex; align-items: center; margin-bottom: 10px; }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; background: #555; margin-right: 12px; border: 2px solid var(--steam-accent); }
+        .lv-tag { background: var(--steam-accent); color: #000; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+
+        .progress-container { height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden; }
+        #exp-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #66c0f4, #007aff); transition: width 0.5s ease; }
+
+        /* --- 3. 资源列表样式 --- */
+        .container { padding: 0 15px; }
+        .section-title { font-size: 12px; color: #8f98a0; text-transform: uppercase; margin: 20px 0 10px 5px; }
+
+        .item-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent;
+        }
+        .item-card:active { border-color: var(--steam-accent); background: rgba(102, 192, 244, 0.05); }
+        .item-name { color: #fff; font-size: 16px; font-weight: 500; }
+        .play-btn { background: #536904; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-size: 13px; }
+
+        /* --- 4. iOS 悬浮导航栏 --- */
+        .ios-nav {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 400px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 35px; border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-around; padding: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100;
+        }
+        .nav-item { color: #8e8e93; text-decoration: none; font-size: 10px; text-align: center; flex: 1; }
+        .nav-item.active { color: var(--steam-accent); }
+        .nav-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+
+        /* --- 5. 全屏视频容器 --- */
+        #video-box {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999;
+        }
+        .close-video {
+            position: fixed; top: 30px; right: 20px; z-index: 10001;
+            background: rgba(255,255,255,0.2); color: #fff; border: none;
+            width: 35px; height: 35px; border-radius: 50%; font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>STORE</h1>
+        <div style="font-size: 12px; color: #66c0f4;">在线: <span id="online-time">0</span> min</div>
+    </div>
+
+    <div class="user-card">
+        <div class="user-info">
+            <div class="avatar"></div>
+            <div>
+                <div style="font-weight: bold; color: #fff;">心做用户 <span class="lv-tag" id="user-lv">Lv.1</span></div>
+                <div style="font-size: 11px; margin-top: 4px;">经验值: <span id="exp-val">0</span> / 100</div>
+            </div>
+        </div>
+        <div class="progress-container">
+            <div id="exp-bar"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section-title">推荐资源</div>
+        <div id="software-list">
+            </div>
+    </div>
+
+    <div id="video-box">
+        <button class="close-video" onclick="closeVideo()">✕</button>
+        <div id="player-container" style="width:100%; height:100%;"></div>
+    </div>
+
+    <nav class="ios-nav">
+        <a href="#" class="nav-item active"><span class="nav-icon">🏪</span>商店</a>
+        <a href="#" class="nav-item"><span class="nav-icon">📚</span>库</a>
+        <a href="#" class="nav-item"><span class="nav-icon">💬</span>社区</a>
+        <a href="#" class="nav-item"><span class="nav-icon">👤</span>我的</a>
+    </nav>
+
+    <script>
+        // --- 核心逻辑控制 ---
+        let startTime = Date.now();
+        let userData = JSON.parse(localStorage.getItem('xz_data')) || { lv: 1, exp: 0, total: 0 };
+
+        // 1. 初始化 UI
+        function renderUI() {
+            document.getElementById('user-lv').innerText = `Lv.${userData.lv}`;
+            document.getElementById('exp-val').innerText = userData.exp % 100;
+            document.getElementById('exp-bar').style.width = (userData.exp % 100) + "%";
+            document.getElementById('online-time').innerText = userData.total;
+        }
+
+        // 2. 自动结算经验 (持久化)
+        function syncData() {
+            let now = Date.now();
+            let diff = Math.floor((now - startTime) / 60000); // 算分钟
+            if (diff > 0) {
+                userData.exp += diff * 5; // 每分钟5点
+                userData.total += diff;
+                userData.lv = Math.floor(userData.exp / 100) + 1;
+                localStorage.setItem('xz_data', JSON.stringify(userData));
+                startTime = now; // 重置计时起点
+                renderUI();
+            }
+        }
+        setInterval(syncData, 30000); // 每30秒后台悄悄存一次，防止崩溃丢失
+
+        // 3. 视频全屏逻辑
+        function playBili(bvid) {
+            document.querySelector('.ios-nav').style.display = 'none';
+            const box = document.getElementById('video-box');
+            const container = document.getElementById('player-container');
+            box.style.display = 'block';
+            container.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${bvid}&high_quality=1&danmaku=1" 
+                style="width:100%; height:100%;" frameborder="0" allowfullscreen="true"></iframe>`;
+        }
+
+        function closeVideo() {
+            document.querySelector('.ios-nav').style.display = 'flex';
+            document.getElementById('video-box').style.display = 'none';
+            document.getElementById('player-container').innerHTML = '';
+            syncData(); // 关闭视频时顺便结算一次经验
+        }
+
+        // 4. 模拟加载数据 (你可以修改为读取你的 data.json)
+        const mockData = [
+            { name: "极客资源包 v1.0", bv: "BV1GJ411x7h7" },
+            { name: "Steam 风格主题模板", bv: "BV1uT4y1P7vX" }
+        ];
+
+        const list = document.getElementById('software-list');
+        mockData.forEach(item => {
+            const el = document.createElement('div');
+            el.className = 'item-card';
+            el.innerHTML = `
+                <div class="item-name">${item.name}</div>
+                <button class="play-btn" onclick="playBili('${item.bv}')">观看演示</button>
+            `;
+            list.appendChild(el);
+        });
+
+        renderUI();
+        // 页面关闭前强制存一次
+        window.onbeforeunload = syncData;
+    </script>
+</body>
+</html>
