@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
     <style>
-        /* --- 1. 全局基础 --- */
+        /* --- 1. 全局样式 (白色背景) --- */
         body { 
             margin: 0; 
-            background: #ffffff; /* 确保白色背景 */
+            background: #ffffff; 
             color: #333333; 
             font-family: "Microsoft YaHei", sans-serif; 
+            overflow-x: hidden;
         }
-        .page { display: none; padding-bottom: 80px; }
+        .page { display: none; min-height: 100vh; padding-bottom: 80px; }
         .page.active { display: block; }
 
-        /* --- 2. 用户端 UI 组件 --- */
-        .top-title { color: #2ecc71; text-align: center; font-size: 28px; font-weight: bold; padding: 20px 0; }
+        /* --- 2. 用户端 UI --- */
+        .top-title { color: #2ecc71; text-align: center; font-size: 28px; font-weight: bold; padding: 25px 0; }
+        
         .blue-card {
             background: #5dade2; 
-            margin: 15px 20px; 
+            margin: 12px 18px; 
             border-radius: 25px; 
             display: flex; 
             justify-content: space-between; 
@@ -28,33 +30,42 @@
             text-decoration: none;
             height: 90px;
             padding: 0 25px;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .notice-card { height: 140px; font-size: 30px; justify-content: center; }
+        .notice-card { height: 150px; font-size: 32px; justify-content: center; }
+        .tag-btn { background: rgba(255,255,255,0.2); padding: 6px 15px; border-radius: 12px; font-size: 15px; }
 
-        /* --- 3. 管理端 UI 组件 --- */
-        .admin-header { background: #1a1a1a; color: white; padding: 30px 20px; display: flex; align-items: center; }
-        .avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #5dade2; margin-right: 15px; background: #333; }
-        .admin-btn { 
-            background: #4a90e2; color: white; margin: 20px; padding: 20px; 
-            border-radius: 15px; text-align: center; cursor: pointer;
+        /* --- 3. 管理端 UI --- */
+        .admin-box { background: #1a1a1a; color: white; padding: 40px 20px; display: flex; align-items: center; }
+        .avatar { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #5dade2; margin-right: 20px; background: #333; }
+        
+        .menu-card {
+            background: #4a86b8; 
+            margin: 20px; 
+            border-radius: 15px; 
+            padding: 25px; 
+            position: relative;
+            color: white;
+            font-size: 18px;
         }
+        .lock-icon { position: absolute; right: 20px; top: 25px; }
+        .danger-btn { color: #ff6b6b; text-align: left; padding: 20px; font-weight: bold; cursor: pointer; }
 
         /* --- 4. 底部导航栏 --- */
         .nav-bar { 
-            position: fixed; bottom: 0; width: 100%; height: 70px; 
-            background: #fff; display: flex; justify-content: space-around; 
-            align-items: center; border-top: 1px solid #eee; z-index: 100;
+            position: fixed; bottom: 0; width: 100%; height: 75px; 
+            background: #ffffff; display: flex; justify-content: space-around; 
+            align-items: center; border-top: 1px solid #eee; z-index: 999;
         }
-        .nav-item { text-decoration: none; color: #666; font-size: 14px; text-align: center; flex: 1; }
-        .nav-item.active { color: #2ecc71; }
+        .nav-item { text-decoration: none; color: #333; font-size: 16px; font-weight: bold; flex: 1; text-align: center; }
+        .nav-item.active { color: #5dade2; }
     </style>
 </head>
 <body>
 
-    <div id="homePage" class="page active">
+    <div id="home" class="page active">
         <div class="top-title">心做资源库</div>
         <div class="blue-card notice-card">公 告</div>
         <a href="https://www.bilibili.com" class="blue-card">
@@ -62,39 +73,49 @@
             <span>视频</span>
         </a>
         <a href="xinzuo_vpn.zip" class="blue-card">
-            <span>应用名称</span>
-            <span style="font-size:12px; border:1px solid #fff; padding:2px 8px; border-radius:8px;">下载</span>
+            <span>📦 我的应用软件</span>
+            <span class="tag-btn">下载</span>
         </a>
     </div>
 
-    <div id="adminPage" class="page">
-        <div class="admin-header">
+    <div id="shop" class="page"><div class="top-title">资源商店</div><p style="text-align:center;">暂无商品</p></div>
+    <div id="community" class="page"><div class="top-title">玩家社区</div><p style="text-align:center;">正在建设中...</p></div>
+
+    <div id="settings" class="page">
+        <div class="admin-box">
             <div class="avatar"></div>
             <div>
-                <div style="font-size:18px;">资源管理员</div>
-                <div style="font-size:12px; color:#aaa;">Lv.1 | 在线 0 分钟</div>
+                <div style="font-size:20px; font-weight:bold;">资源管理员</div>
+                <div style="font-size:13px; color:#888; margin-top:5px;">Lv.1 | 在线 0 分钟</div>
             </div>
         </div>
-        <div class="admin-btn" onclick="alert('请输入管理员密码')">资源管理后台 🔒 进入</div>
-        <div class="admin-btn" style="background:#e74c3c;" onclick="confirm('确定清空所有本地数据吗？')">清空本地数据</div>
+        
+        <div class="menu-card" onclick="alert('来自 zxcvbnm-uc.github.io 的网页显示：\n\n密码错误，无法进入！')">
+            资源管理后台 <span class="lock-icon">🔒 进入</span>
+        </div>
+        
+        <div class="danger-btn" onclick="confirm('确定要重置所有本地数据吗？')">重置所有数据</div>
     </div>
 
     <nav class="nav-bar">
-        <div class="nav-item active" onclick="showPage('homePage', this)">首页</div>
-        <div class="nav-item" onclick="alert('商店暂未开放')">商店</div>
-        <div class="nav-item" onclick="alert('社区开发中')">社区</div>
-        <div class="nav-item" onclick="showPage('adminPage', this)">设置</div> </nav>
+        <div class="nav-item active" onclick="switchTab('home', this)">首页</div>
+        <div class="nav-item" onclick="switchTab('shop', this)">商店</div>
+        <div class="nav-item" onclick="switchTab('community', this)">社区</div>
+        <div class="nav-item" onclick="switchTab('settings', this)">设置</div>
+    </nav>
 
     <script>
-        // 页面切换逻辑
-        function showPage(pageId, element) {
-            // 隐藏所有页面
+        function switchTab(tabId, el) {
+            // 切换页面显示
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            // 显示目标页面
-            document.getElementById(pageId).classList.add('active');
-            // 更新导航栏状态
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            element.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            
+            // 切换导航高亮
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+            
+            // 页面回到顶部
+            window.scrollTo(0,0);
         }
     </script>
 </body>
