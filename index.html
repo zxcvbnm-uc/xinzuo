@@ -5,31 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
     <style>
-        /* --- 1. 核心布局样式 --- */
-        body { margin: 0; background: #ffffff; color: #333; font-family: sans-serif; padding-bottom: 100px; }
+        /* --- 1. 基础样式 --- */
+        body { margin: 0; background: #f4f7f9; color: #333; font-family: sans-serif; padding-bottom: 100px; }
         .page-content { display: none; }
         .page-content.active { display: block; }
 
-        /* --- 2. 你的特色 UI (蓝色圆角风格) --- */
-        .top-header { background: #5dade2; margin: 15px; padding: 15px; border-radius: 20px; text-align: center; color: #fff; font-weight: bold; }
-        .card { background: #5dade2; margin: 15px; border-radius: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; }
-        .row { display: flex; justify-content: space-between; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); align-items: center; font-weight: bold; }
-        .row:last-child { border-bottom: none; }
-        .btn-dl { background: #fff; padding: 5px 15px; border-radius: 10px; text-decoration: none; color: #000; font-size: 14px; }
-
-        /* --- 3. 设置页 & 管理框 --- */
-        .profile { background: #1a1a1a; padding: 40px 20px; display: flex; align-items: center; gap: 15px; color: #fff; }
-        .avatar { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #5dade2; background: #333; display: flex; align-items: center; justify-content: center; }
+        /* --- 2. 统一 UI 卡片 --- */
+        .top-header { background: #5dade2; margin: 15px; padding: 18px; border-radius: 20px; text-align: center; color: #fff; font-weight: bold; font-size: 20px; box-shadow: 0 4px 10px rgba(91,173,226,0.3); }
+        .card { background: #5dade2; margin: 15px; border-radius: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; padding: 15px; }
         
-        /* 隐藏的上传框样式 */
+        /* 资源项样式 */
+        .res-item { background: #ffffff; margin-bottom: 15px; border-radius: 20px; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .res-info { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 18px; }
+        .res-icon { width: 45px; height: 45px; background: #eee; border-radius: 12px; flex-shrink: 0; border: 1px solid #ddd; }
+        
+        /* 按钮组 */
+        .btn-group { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 10px; text-align: center; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.2s; }
+        .btn-bili { background: #fb7299; color: white; } /* B站粉 */
+        .btn-save { background: #2ecc71; color: white; } /* 下载绿 */
+
+        /* --- 3. 设置 & 管理端 --- */
+        .profile { background: #1a1a1a; padding: 40px 20px; display: flex; align-items: center; gap: 15px; color: #fff; margin-bottom: 10px; }
+        .avatar { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #5dade2; background: #333; overflow: hidden; }
+        
         #admin-panel { display: none; margin: 15px; padding: 20px; background: #fff; border: 3px dashed #5dade2; border-radius: 20px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
-        .btn-post { width: 100%; padding: 12px; background: #5dade2; color: #fff; border: none; border-radius: 10px; font-weight: bold; }
+        .input-box { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
 
         /* --- 4. 底部导航 --- */
-        .nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; background: #fff; height: 60px; border-radius: 30px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .nav-item { text-decoration: none; color: #888; font-size: 14px; font-weight: bold; }
+        .nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; background: #fff; height: 65px; border-radius: 35px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: 1px solid #eee; }
+        .nav-item { text-decoration: none; color: #888; font-size: 13px; font-weight: bold; text-align: center; }
         .nav-item.active { color: #5dade2; }
     </style>
 </head>
@@ -37,53 +42,51 @@
 
     <div id="p-home" class="page-content active">
         <div class="top-header">心做资源库</div>
-        <div class="card" style="padding: 40px; text-align: center; font-size: 30px;">公 告</div>
-        <div id="res-list"></div>
+        <div class="card" style="padding: 30px; text-align: center; font-size: 24px; color: #fff; font-weight: bold;">公告：欢迎来到心做</div>
+        <div id="res-list" style="padding: 0 15px;">
+            </div>
     </div>
 
     <div id="p-comm" class="page-content">
         <div class="top-header">社 区</div>
-        <div class="card" style="padding: 50px; text-align: center;">社区建设中...</div>
+        <div class="card" style="padding: 50px; text-align: center; color:#fff;">功能测试中...</div>
     </div>
 
     <div id="p-sett" class="page-content">
         <div class="profile">
-            <div class="avatar">头像</div>
+            <div class="avatar"></div>
             <div>
                 <div style="font-size: 18px; font-weight: bold;" id="u-name">游客用户</div>
-                <div style="font-size: 12px; color: #5dade2;">Lv.1 | 资源探索者</div>
+                <div style="font-size: 12px; color: #5dade2;" id="u-lv">Lv.1 | 资源探索者</div>
             </div>
         </div>
 
         <div id="admin-panel">
-            <h3 style="margin-top:0; color:#5dade2;">🚀 管理员上传工具</h3>
-            <div class="input-group"><input type="text" id="app-n" placeholder="应用名称"></div>
-            <div class="input-group"><input type="text" id="app-u" placeholder="链接 或 BV号"></div>
-            <button class="btn-post" onclick="doUpload()">立即发布到首页</button>
+            <h4 style="margin:0 0 10px 0; color:#5dade2;">🛠️ 管理员上传中心</h4>
+            <input type="text" id="app-n" class="input-box" placeholder="应用名称">
+            <input type="text" id="app-bili" class="input-box" placeholder="Bilibili BV号 (选填)">
+            <input type="text" id="app-dl" class="input-box" placeholder="文件下载链接">
+            <button class="btn-save" style="width:100%; border:none; padding:12px; border-radius:10px;" onclick="doUpload()">确认发布</button>
         </div>
 
-        <div class="card">
-            <div class="row" onclick="masterLogin()" id="login-row">
-                <span>管理员登录</span>
-                <span style="font-weight: normal; font-size: 12px;">🔒 登录开启权限</span>
+        <div class="card" style="background:#fff;">
+            <div onclick="masterLogin()" style="padding:15px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; color:#333; font-weight:bold;">
+                <span id="login-text">管理员登录</span><span>🔒</span>
             </div>
-            <div class="row"><span>QQ群：点击加入</span></div>
-            <div class="row" onclick="clearData()" style="color: #e74c3c;"><span>重置本地数据</span></div>
+            <div style="padding:15px; color:#333; font-weight:bold;">QQ群：点击加入</div>
+            <div onclick="clearData()" style="padding:15px; color:#e74c3c; font-weight:bold;">清除所有本地缓存</div>
         </div>
     </div>
 
     <nav class="nav">
-        <a href="javascript:void(0)" class="nav-item active" onclick="nav('p-home', this)">首页</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-comm', this)">社区</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-sett', this)">设置</a>
+        <a href="javascript:void(0)" class="nav-item active" onclick="nav('p-home', this)"><div>🏠</div>首页</a>
+        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-comm', this)"><div>🌐</div>社区</a>
+        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-sett', this)"><div>⚙️</div>设置</a>
     </nav>
 
     <script>
-        // --- 1. 配置：你的超级账号 ---
-        const MASTER_ID = "xinzuo";
-        const MASTER_PW = "123456"; // 建议以后改成更难的
+        const MASTER = { id: "xinzuo", pw: "123456" };
 
-        // --- 2. 导航逻辑 ---
         function nav(id, el) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -91,74 +94,67 @@
             el.classList.add('active');
         }
 
-        // --- 3. 登录变身逻辑 ---
         function masterLogin() {
-            let u = prompt("请输入管理员账号：");
-            let p = prompt("请输入管理员密码：");
-            if(u === MASTER_ID && p === MASTER_PW) {
+            let u = prompt("管理员账号：");
+            let p = prompt("管理员密码：");
+            if(u === MASTER.id && p === MASTER.pw) {
                 localStorage.setItem('role', 'admin');
-                alert("登录成功！上传功能已在下方开启。");
+                alert("登录成功！上传框已开启。");
                 initAdmin();
-            } else {
-                alert("账号或密码不匹配。");
-            }
+            } else { alert("账号或密码错误"); }
         }
 
         function initAdmin() {
             if(localStorage.getItem('role') === 'admin') {
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('u-name').innerText = "管理员：心做";
-                document.getElementById('login-row').innerHTML = "<span>身份状态</span><span style='color:#2ecc71'>已授权</span>";
+                document.getElementById('login-text').innerText = "已授权管理员";
             }
         }
 
-        // --- 4. 资源发布逻辑 ---
-        // 初始资源列表 (你可以随时在代码里增加)
+        // --- 核心：资源列表 ---
         let baseApps = [
-            { name: "应用一", url: "BV1GJ411x7h7" }
+            { name: "官方展示资源", bili: "BV1GJ411x7h7", dl: "https://zxcvbnm-uc.github.io/xinzuo/" }
         ];
 
         function render() {
-            const container = document.getElementById('res-list');
-            container.innerHTML = "";
-            let localApps = JSON.parse(localStorage.getItem('my_apps')) || [];
-            let all = [...baseApps, ...localApps];
+            const list = document.getElementById('res-list');
+            list.innerHTML = "";
+            let locals = JSON.parse(localStorage.getItem('my_apps')) || [];
+            let all = [...baseApps, ...locals];
 
             all.forEach(a => {
-                let card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="row">
-                        <div style="display:flex; align-items:center; gap:10px;"><div style="width:30px;height:30px;background:#fff;border-radius:5px;"></div>${a.name}</div>
-                        <a href="javascript:void(0)" onclick="go('${a.url}')" class="btn-dl">下载</a>
+                let item = document.createElement('div');
+                item.className = 'res-item';
+                item.innerHTML = `
+                    <div class="res-info">
+                        <div class="res-icon"></div>
+                        <span>${a.name}</span>
+                    </div>
+                    <div class="btn-group">
+                        ${a.bili ? `<a href="https://m.bilibili.com/video/${a.bili}" class="btn btn-bili" target="_blank">Bilibili 视频</a>` : ''}
+                        <a href="${a.dl}" class="btn btn-save" target="_blank">💾 立即下载</a>
                     </div>
                 `;
-                container.appendChild(card);
+                list.appendChild(item);
             });
         }
 
         function doUpload() {
             let n = document.getElementById('app-n').value;
-            let u = document.getElementById('app-u').value;
-            if(n && u) {
+            let b = document.getElementById('app-bili').value;
+            let d = document.getElementById('app-dl').value;
+            if(n && d) {
                 let list = JSON.parse(localStorage.getItem('my_apps')) || [];
-                list.push({name: n, url: u});
+                list.push({name: n, bili: b, dl: d});
                 localStorage.setItem('my_apps', JSON.stringify(list));
-                alert("发布成功！");
-                render();
-                nav('p-home', document.querySelectorAll('.nav-item')[0]); // 自动跳回首页看结果
-            }
+                alert("资源已发布！");
+                location.reload();
+            } else { alert("请至少填入名称和下载链接"); }
         }
 
-        function go(u) {
-            window.location.href = u.startsWith('BV') ? `https://m.bilibili.com/video/${u}` : u;
-        }
+        function clearData() { if(confirm("确定清空吗？")) { localStorage.clear(); location.reload(); } }
 
-        function clearData() {
-            if(confirm("确定清除所有本地数据吗？")) { localStorage.clear(); location.reload(); }
-        }
-
-        // 初始化
         initAdmin();
         render();
     </script>
