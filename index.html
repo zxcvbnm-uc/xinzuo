@@ -5,87 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
     <style>
-        /* --- 1. 基础全局样式 --- */
-        body { margin: 0; background: #f0f3f5; color: #333; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding-bottom: 110px; }
+        /* --- 1. 全局基础 --- */
+        body { margin: 0; background: #000000; color: #ffffff; font-family: "Microsoft YaHei", sans-serif; padding-bottom: 100px; }
         .page-content { display: none; }
-        .page-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page-content.active { display: block; }
 
-        /* --- 2. 顶部与卡片 UI --- */
-        .top-header { background: #5dade2; margin: 15px; padding: 18px; border-radius: 20px; text-align: center; color: #fff; font-weight: bold; font-size: 20px; box-shadow: 0 4px 10px rgba(91,173,226,0.3); }
-        .card { background: #5dade2; margin: 15px; border-radius: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; padding: 15px; }
+        /* --- 2. 你的手绘风 UI 组件 --- */
+        .top-title { color: #2ecc71; text-align: center; font-size: 28px; font-weight: bold; padding: 20px 0; }
         
-        /* 资源项容器 */
-        .res-item { background: #ffffff; margin-bottom: 15px; border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 12px; border: 1px solid #eef2f5; }
-        .res-top { display: flex; justify-content: space-between; align-items: center; }
-        .res-info { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 19px; }
-        .res-icon { width: 48px; height: 48px; background: #f8f9fa; border-radius: 12px; flex-shrink: 0; border: 1px solid #eee; }
-        
-        /* 按钮样式 */
-        .btn-bili { background: #fb7299; color: white; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: bold; }
-        .dl-section { margin-top: 5px; border-top: 1px solid #f0f0f0; padding-top: 12px; }
-        .btn-download { display: block; background: #2ecc71; color: white; padding: 14px; text-align: center; border-radius: 12px; text-decoration: none; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(46,204,113,0.2); }
+        /* 蓝色大卡片基类 */
+        .blue-card { 
+            background: #5dade2; 
+            margin: 10px 20px; 
+            border-radius: 25px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            color: #1a1a1a;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(91,173,226,0.3);
+            transition: transform 0.1s;
+        }
+        .blue-card:active { transform: scale(0.98); }
 
-        /* --- 3. 设置页 & 管理框 --- */
-        .profile { background: #1a1a1a; padding: 45px 20px; display: flex; align-items: center; gap: 15px; color: #fff; }
-        .avatar { width: 75px; height: 75px; border-radius: 50%; border: 2px solid #5dade2; background: #333; }
-        #admin-panel { display: none; margin: 15px; padding: 20px; background: #fff; border: 2px dashed #5dade2; border-radius: 20px; }
-        .input-box { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
+        /* 公告板 */
+        .notice-board { height: 180px; font-size: 40px; font-weight: bold; color: #34495e; }
 
-        /* --- 4. 底部导航 --- */
-        .nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; background: rgba(255,255,255,0.95); height: 65px; border-radius: 35px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid #eee; backdrop-filter: blur(10px); }
-        .nav-item { text-decoration: none; color: #888; font-size: 13px; font-weight: bold; text-align: center; }
-        .nav-item.active { color: #5dade2; }
+        /* 资源容器（黑色背景区） */
+        .res-container { background: #000; padding: 10px 0; }
+
+        /* Bilibili 视频卡片 */
+        .bili-card { height: 100px; font-size: 28px; font-weight: bold; gap: 40px; }
+
+        /* 下载资源卡片 */
+        .dl-card { height: 100px; font-size: 24px; font-weight: bold; position: relative; }
+        .dl-card .tag-left { position: absolute; left: 25px; }
+        .dl-card .tag-mid { position: absolute; left: 50%; transform: translateX(-50%); }
+        .dl-card .tag-right { position: absolute; right: 25px; }
+
+        /* --- 3. 设置页样式 --- */
+        .profile-box { padding: 40px 20px; display: flex; align-items: center; gap: 20px; }
+        .avatar-circle { width: 90px; height: 90px; background: #000; border: 2px solid #5dade2; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .info-rect { background: #000; border: 1px solid #333; padding: 15px 30px; flex-grow: 1; font-size: 18px; line-height: 1.6; }
+
+        /* 管理上传框 */
+        #admin-panel { display: none; margin: 20px; padding: 20px; background: #fff; border-radius: 20px; color: #333; }
+        .input-style { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+
+        /* --- 4. 底部导航栏 --- */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; height: 80px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid #eee; }
+        .nav-item { text-decoration: none; color: #000; font-size: 20px; font-weight: bold; }
+        .nav-item.active { color: #5dade2; border-bottom: 3px solid #5dade2; }
     </style>
 </head>
 <body>
 
     <div id="p-home" class="page-content active">
-        <div class="top-header">心做资源库</div>
-        <div class="card" style="padding: 30px; text-align: center; font-size: 24px; color: #fff; font-weight: bold;">公告：欢迎使用权限版</div>
-        <div id="res-list" style="padding: 0 15px;">
+        <div class="top-title">心做资源库</div>
+        
+        <div class="blue-card notice-board">公 告</div>
+
+        <div class="res-container" id="res-list">
             </div>
     </div>
 
     <div id="p-comm" class="page-content">
-        <div class="top-header">社 区</div>
-        <div class="card" style="padding: 50px; text-align: center; color:#fff;">功能正在开发中...</div>
+        <div class="top-title">社 区</div>
+        <div class="blue-card" style="height:200px; font-size:24px;">社区内容建设中...</div>
     </div>
 
     <div id="p-sett" class="page-content">
-        <div class="profile">
-            <div class="avatar"></div>
-            <div>
-                <div style="font-size: 19px; font-weight: bold;" id="u-name">游客用户</div>
-                <div style="font-size: 13px; color: #5dade2;" id="u-lv">Lv.1 | 在线 0 分钟</div>
+        <div class="profile-box">
+            <div class="avatar-circle">头像</div>
+            <div class="info-rect">
+                <div id="u-name">名字：游客</div>
+                <div id="u-lv">等级：Lv.1</div>
+                <div>介绍：资源库用户</div>
             </div>
         </div>
 
         <div id="admin-panel">
-            <h4 style="margin:0 0 12px 0; color:#5dade2;">🚀 管理员快捷上传</h4>
-            <input type="text" id="app-n" class="input-box" placeholder="资源名称">
-            <input type="text" id="app-bili" class="input-box" placeholder="Bilibili BV号 (选填)">
-            <input type="text" id="app-dl" class="input-box" placeholder="下载链接">
-            <button onclick="doUpload()" style="width:100%; border:none; padding:12px; border-radius:10px; background:#2ecc71; color:white; font-weight:bold;">发布新资源</button>
+            <h3 style="margin-top:0">上传新模块</h3>
+            <input type="text" id="in-name" class="input-style" placeholder="应用名称">
+            <input type="text" id="in-bili" class="input-style" placeholder="Bilibili BV号 (选填)">
+            <input type="text" id="in-dl" class="input-style" placeholder="下载链接">
+            <button onclick="doUpload()" style="width:100%; padding:12px; background:#5dade2; border:none; border-radius:10px; color:white; font-weight:bold;">发布到首页</button>
         </div>
 
-        <div class="card" style="background:#fff;">
-            <div onclick="masterLogin()" style="padding:18px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; color:#333; font-weight:bold;">
-                <span id="login-text">管理员登录</span><span>🔒</span>
-            </div>
-            <div style="padding:18px; color:#333; font-weight:bold;">QQ群：点击加入</div>
-            <div onclick="clearData()" style="padding:18px; color:#e74c3c; font-weight:bold;">清除本地数据</div>
+        <div class="blue-card" style="height:120px; font-size:22px; color:#1a1a1a;" onclick="masterLogin()">
+            <span id="login-txt">管理员登录 (特定账号)</span>
         </div>
+        
+        <div class="blue-card" style="height:60px; font-size:18px;" onclick="clearData()">重置所有数据</div>
     </div>
 
-    <nav class="nav">
-        <a href="javascript:void(0)" class="nav-item active" onclick="nav('p-home', this)"><div>🏠</div>首页</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-comm', this)"><div>🌐</div>社区</a>
-        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-sett', this)"><div>⚙️</div>设置</a>
+    <nav class="nav-bar">
+        <a href="javascript:void(0)" class="nav-item active" onclick="nav('p-home', this)">首页</a>
+        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-comm', this)">社区</a>
+        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-sett', this)">设置</a>
     </nav>
 
     <script>
-        // 配置：管理员账号
         const MASTER = { id: "xinzuo", pw: "123456" };
 
         function nav(id, el) {
@@ -96,66 +116,74 @@
         }
 
         function masterLogin() {
-            let u = prompt("请输入管理账号：");
-            let p = prompt("请输入密码：");
+            let u = prompt("管理员账号：");
+            let p = prompt("管理员密码：");
             if(u === MASTER.id && p === MASTER.pw) {
-                localStorage.setItem('role', 'admin');
-                alert("管理员身份已确认！");
+                localStorage.setItem('is_admin', 'true');
+                alert("登录成功！");
                 location.reload();
-            } else { alert("验证失败"); }
+            } else { alert("账号错误"); }
         }
 
-        // 初始化身份
-        if(localStorage.getItem('role') === 'admin') {
+        if(localStorage.getItem('is_admin') === 'true') {
             document.getElementById('admin-panel').style.display = 'block';
-            document.getElementById('u-name').innerText = "管理员：心做";
-            document.getElementById('login-text').innerText = "已登录管理员";
+            document.getElementById('u-name').innerText = "名字：心做管理员";
+            document.getElementById('login-txt').innerText = "管理员：已在线";
         }
 
-        // --- 核心：资源列表逻辑 ---
-        let baseApps = [
-            { name: "官方资源一", bili: "BV1GJ411x7h7", dl: "https://zxcvbnm-uc.github.io/xinzuo/" }
+        // --- 核心：资源渲染逻辑 (完全对应你的原型图) ---
+        let baseData = [
+            { name: "应用一", bili: "BV1GJ411x7h7", dl: "#" }
         ];
 
         function render() {
             const list = document.getElementById('res-list');
             list.innerHTML = "";
-            let locals = JSON.parse(localStorage.getItem('my_apps')) || [];
-            let all = [...baseApps, ...locals];
+            let locals = JSON.parse(localStorage.getItem('my_res')) || [];
+            let all = [...baseData, ...locals];
 
-            all.forEach(a => {
-                let item = document.createElement('div');
-                item.className = 'res-item';
-                item.innerHTML = `
-                    <div class="res-top">
-                        <div class="res-info">
-                            <div class="res-icon"></div>
-                            <span>${a.name}</span>
-                        </div>
-                        ${a.bili ? `<a href="https://m.bilibili.com/video/${a.bili}" class="btn-bili" target="_blank">Bilibili</a>` : ''}
-                    </div>
-                    <div class="dl-section">
-                        <a href="${a.dl}" class="btn-download" target="_blank">应用下载</a>
-                    </div>
+            all.forEach(item => {
+                // 1. 如果有B站视频，先渲染视频大卡片
+                if(item.bili) {
+                    let bCard = document.createElement('a');
+                    bCard.className = 'blue-card bili-card';
+                    bCard.href = `https://m.bilibili.com/video/${item.bili}`;
+                    bCard.innerHTML = `<span>Bilibili</span> <span>视频</span>`;
+                    list.appendChild(bCard);
+                }
+
+                // 2. 接着渲染下载大卡片
+                let dCard = document.createElement('a');
+                dCard.className = 'blue-card dl-card';
+                dCard.href = item.dl;
+                dCard.innerHTML = `
+                    <span class="tag-left">图标</span>
+                    <span class="tag-mid">${item.name}</span>
+                    <span class="tag-right">下载</span>
                 `;
-                list.appendChild(item);
+                list.appendChild(dCard);
+
+                // 加一个黑色间距，还原手绘的感觉
+                let space = document.createElement('div');
+                space.style.height = "20px";
+                list.appendChild(space);
             });
         }
 
         function doUpload() {
-            let n = document.getElementById('app-n').value;
-            let b = document.getElementById('app-bili').value;
-            let d = document.getElementById('app-dl').value;
+            let n = document.getElementById('in-name').value;
+            let b = document.getElementById('in-bili').value;
+            let d = document.getElementById('in-dl').value;
             if(n && d) {
-                let list = JSON.parse(localStorage.getItem('my_apps')) || [];
+                let list = JSON.parse(localStorage.getItem('my_res')) || [];
                 list.push({name: n, bili: b, dl: d});
-                localStorage.setItem('my_apps', JSON.stringify(list));
-                alert("资源发布成功！");
+                localStorage.setItem('my_res', JSON.stringify(list));
+                alert("模块已发布！");
                 location.reload();
-            } else { alert("请填写完整信息"); }
+            }
         }
 
-        function clearData() { if(confirm("确定清空吗？")) { localStorage.clear(); location.reload(); } }
+        function clearData() { if(confirm("确定吗？")) { localStorage.clear(); location.reload(); } }
 
         render();
     </script>
