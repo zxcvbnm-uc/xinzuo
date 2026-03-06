@@ -3,154 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>心做资源库 - 连体版</title>
+    <title>心做资源库 - 完整版</title>
     <style>
-        /* --- 1. 全局样式 --- */
-        body { 
-            margin: 0; background: #ffffff; color: #333;
-            font-family: "Microsoft YaHei", sans-serif; 
-            padding-bottom: 120px;
-        }
+        /* --- 1. 全局基础 --- */
+        body { margin: 0; background: #ffffff; color: #333; font-family: "Microsoft YaHei", sans-serif; padding-bottom: 120px; }
+        .page-content { display: none; animation: fadeIn 0.3s ease; }
+        .page-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- 2. 顶部和公告 --- */
-        .top-header {
-            background: #5dade2; margin: 15px; padding: 20px;
-            border-radius: 25px; text-align: center;
-            color: #2ecc71; font-weight: bold; font-size: 24px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .notice-card {
-            background: #5dade2; margin: 15px; padding: 40px 20px;
-            border-radius: 25px; text-align: center;
-            color: #333; font-size: 32px; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+        /* --- 2. 顶部样式 (首页/社区) --- */
+        .top-header { background: #5dade2; margin: 15px; padding: 20px; border-radius: 25px; text-align: center; color: #2ecc71; font-weight: bold; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .notice-card { background: #5dade2; margin: 15px; padding: 40px 20px; border-radius: 25px; text-align: center; color: #333; font-size: 32px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        /* --- 3. ★★★ 连体资源列表 (复刻图3) ★★★ --- */
-        .resource-group {
-            background: #5dade2; /* 把蓝色背景交给大盒子 */
-            margin: 15px;
-            border-radius: 25px; /* 外层大盒子统一做 25px 的圆角 */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            overflow: hidden; /* 关键代码：把里面直角的列表元素切成圆角 */
+        /* --- 3. 设置页顶部 (复刻图6深色区) --- */
+        .profile-header {
+            background: #1a1a1a; padding: 45px 20px;
+            display: flex; align-items: center; gap: 20px; color: #ffffff;
         }
+        .avatar {
+            width: 85px; height: 85px; background: #333; 
+            border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; font-size: 16px; border: 2px solid #5dade2;
+            flex-shrink: 0;
+        }
+        .user-info { display: flex; flex-direction: column; gap: 6px; }
+        .user-name { font-size: 22px; font-weight: bold; color: #5dade2; }
+        .user-intro { font-size: 13px; color: #aaa; line-height: 1.4; }
+
+        /* --- 4. 连体蓝卡片 (通用布局) --- */
+        .group-box { background: #5dade2; margin: 15px; border-radius: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; }
+        .row-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 22px 20px; color: #000; font-size: 20px; font-weight: bold; 
+            border-bottom: 1px solid rgba(0,0,0,0.1); position: relative;
+        }
+        .row-item:last-child { border-bottom: none; }
         
-        .resource-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 25px 20px;
-            color: #000; font-size: 22px; font-weight: bold;
-            /* 我加了一条极其微弱的透明黑线作为分割，让列表更有质感 */
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
-            transition: background 0.2s;
-        }
-        
-        .resource-item:last-child {
-            border-bottom: none; /* 最后一行不需要底线 */
-        }
-        
-        .resource-item:active {
-            background: rgba(0,0,0,0.05); /* 按下去时有一点反馈 */
-        }
+        /* 列表左侧图标 */
+        .res-left { display: flex; align-items: center; gap: 12px; }
+        .res-icon { width: 40px; height: 40px; background: #fff; border-radius: 10px; }
+        .dl-btn { color: #000; text-decoration: none; border-bottom: 2px solid #000; font-size: 20px; }
 
-        .res-left { display: flex; align-items: center; gap: 15px; }
-        .res-icon { width: 45px; height: 45px; background: #fff; border-radius: 10px; }
-        .download-btn { color: #000; text-decoration: none; border-bottom: 2px solid #000; }
+        /* 二维码展示 (复刻图6右侧二维码) */
+        .qr-side {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            width: 70px; height: 70px; background: #fff; border: 2px solid #5dade2;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 10px; color: #999; overflow: hidden;
+        }
+        .qr-side img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- 4. iOS 胶囊导航栏 --- */
-        .ios-capsule-nav {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 450px; height: 70px;
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 35px; display: flex; align-items: center; justify-content: space-around;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid #eee; z-index: 2000;
-        }
-        .nav-item { 
-            flex: 1; display: flex; flex-direction: column; align-items: center; 
-            text-decoration: none; color: #888; font-size: 12px; padding: 10px 0;
-            border-radius: 25px; transition: 0.3s;
-        }
-        .nav-item.active { background: #f0f4ff; color: #007aff; }
+        /* --- 5. iOS 底部导航 --- */
+        .ios-nav { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; height: 70px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 35px; display: flex; align-items: center; justify-content: space-around; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid #eee; z-index: 2000; }
+        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #888; font-size: 12px; }
+        .nav-link.active { color: #007aff; }
         .nav-icon { font-size: 24px; margin-bottom: 2px; }
-
-        .lv-badge { position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: #fff; padding: 5px 12px; border-radius: 15px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div id="lv-info" class="lv-badge">Lv.1 | 0 min</div>
+    <div id="p-home" class="page-content active">
+        <div class="top-header">心做资源库</div>
+        <div class="notice-card">公 告</div>
+        <div class="group-box" id="app-list">
+            </div>
+    </div>
 
-    <div class="top-header">心做资源库</div>
+    <div id="p-comm" class="page-content">
+        <div class="top-header">社 区</div>
+        <div class="notice-card" style="font-size: 20px; padding: 60px 20px;">
+            （当前功能还在测试）
+        </div>
+    </div>
 
-    <div class="notice-card">公 告</div>
-
-    <div class="resource-group" id="res-list">
+    <div id="p-sett" class="page-content">
+        <div class="profile-header">
+            <div class="avatar">头像</div>
+            <div class="user-info">
+                <div class="user-name">心做用户</div>
+                <div class="user-intro" id="lv-info">Lv.1 | 在线 0 分钟</div>
+                <div class="user-intro">致力于打造最纯净的资源共享库</div>
+            </div>
         </div>
 
-    <nav class="ios-capsule-nav">
-        <a href="#" class="nav-item active" onclick="sel(this)">
+        <div class="group-box">
+            <div class="row-item" style="padding-right: 90px;">
+                <div>QQ：88888888</div>
+                <div class="qr-side">二维码</div> </div>
+            <div class="row-item" style="padding-right: 90px;">
+                <div>快手号：XXXXXX</div>
+                <div class="qr-side">二维码</div>
+            </div>
+            <div class="row-item">
+                <div>共创者：心做、AI助手</div>
+            </div>
+            <div class="row-item" onclick="resetData()" style="color: #c0392b; font-size: 16px;">
+                <span>重置等级与在线时长</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="ios-nav">
+        <a href="javascript:void(0)" class="nav-link active" onclick="goPage('p-home', this)">
             <span class="nav-icon">🏠</span><span>首页</span>
         </a>
-        <a href="#" class="nav-item" onclick="sel(this)">
-            <span class="nav-icon">🛒</span><span>商店</span>
-        </a>
-        <a href="#" class="nav-item" onclick="sel(this)">
+        <a href="javascript:void(0)" class="nav-link" onclick="goPage('p-comm', this)">
             <span class="nav-icon">🌐</span><span>社区</span>
         </a>
-        <a href="#" class="nav-item" onclick="sel(this)">
+        <a href="javascript:void(0)" class="nav-link" onclick="goPage('p-sett', this)">
             <span class="nav-icon">⚙️</span><span>设置</span>
         </a>
     </nav>
 
     <script>
-        // 计分逻辑
+        // --- 1. 路由控制 ---
+        function goPage(pageId, el) {
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // --- 2. 等级持久化 ---
         let start = Date.now();
-        let data = JSON.parse(localStorage.getItem('xz_final')) || { lv: 1, exp: 0, total: 0 };
+        let store = JSON.parse(localStorage.getItem('xz_v5')) || { lv: 1, exp: 0, total: 0 };
 
         function sync() {
             let m = Math.floor((Date.now() - start) / 60000);
             if(m > 0) {
-                data.exp += m * 10;
-                data.total += m;
-                data.lv = Math.floor(data.exp / 100) + 1;
-                localStorage.setItem('xz_final', JSON.stringify(data));
+                store.exp += m * 10;
+                store.total += m;
+                store.lv = Math.floor(store.exp / 100) + 1;
+                localStorage.setItem('xz_v5', JSON.stringify(store));
                 start = Date.now();
-                document.getElementById('lv-info').innerText = `Lv.${data.lv} | ${data.total} min`;
+                updateUI();
             }
         }
 
-        function sel(el) {
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
+        function updateUI() {
+            document.getElementById('lv-info').innerText = `Lv.${store.lv} | 在线 ${store.total} 分钟`;
         }
 
-        // 渲染列表
+        function resetData() {
+            if(confirm("确定要删除所有等级数据吗？")) {
+                localStorage.removeItem('xz_v5');
+                location.reload();
+            }
+        }
+
+        // --- 3. 首页资源动态填充 ---
         const apps = [
             { name: "应用一", bv: "BV1GJ411x7h7" },
             { name: "应用二", bv: "BV1uT4y1P7vX" },
             { name: "应用三", bv: "BV16f4y1Q7Yv" }
         ];
 
-        const list = document.getElementById('res-list');
-        apps.forEach(app => {
-            const item = document.createElement('div');
-            item.className = 'resource-item';
-            item.innerHTML = `
-                <div class="res-left">
-                    <div class="res-icon"></div>
-                    <span>${app.name}</span>
-                </div>
-                <a href="javascript:void(0)" onclick="go('${app.bv}')" class="download-btn">下载</a>
+        const list = document.getElementById('app-list');
+        apps.forEach(a => {
+            const row = document.createElement('div');
+            row.className = 'row-item';
+            row.innerHTML = `
+                <div class="res-left"><div class="res-icon"></div><span>${a.name}</span></div>
+                <a href="javascript:void(0)" onclick="dl('${a.bv}')" class="dl-btn">下载</a>
             `;
-            list.appendChild(item);
+            list.appendChild(row);
         });
 
-        function go(bv) {
+        function dl(bv) {
             sync();
             window.location.href = `https://m.bilibili.com/video/${bv}`;
         }
 
-        setInterval(sync, 30000);
-        document.getElementById('lv-info').innerText = `Lv.${data.lv} | ${data.total} min`;
+        // 初始化
+        updateUI();
+        setInterval(sync, 30000); // 30秒检查一次经验
     </script>
 </body>
 </html>
