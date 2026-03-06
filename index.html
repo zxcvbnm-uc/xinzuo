@@ -5,117 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
     <style>
-        /* --- 1. 全局样式 (白色背景) --- */
-        body { 
-            margin: 0; 
-            background: #ffffff; 
-            color: #333333; 
-            font-family: "Microsoft YaHei", sans-serif; 
-            overflow-x: hidden;
-        }
-        .page { display: none; min-height: 100vh; padding-bottom: 80px; }
+        /* 1. 全局样式 (白色背景) */
+        body { margin: 0; background: #ffffff; color: #333; font-family: sans-serif; }
+        .page { display: none; padding-bottom: 90px; min-height: 100vh; }
         .page.active { display: block; }
 
-        /* --- 2. 用户端 UI --- */
-        .top-title { color: #2ecc71; text-align: center; font-size: 28px; font-weight: bold; padding: 25px 0; }
-        
+        /* 2. 用户端 UI (完全还原手绘稿) */
+        .top-title { color: #2ecc71; text-align: center; font-size: 28px; font-weight: bold; padding: 20px 0; }
         .blue-card {
-            background: #5dade2; 
-            margin: 12px 18px; 
-            border-radius: 25px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            color: #ffffff;
-            text-decoration: none;
-            height: 90px;
-            padding: 0 25px;
-            font-size: 19px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #5dade2; margin: 15px 18px; border-radius: 25px; 
+            display: flex; justify-content: space-between; align-items: center;
+            color: #ffffff; text-decoration: none; height: 90px; padding: 0 25px;
+            font-size: 19px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .notice-card { height: 150px; font-size: 32px; justify-content: center; }
-        .tag-btn { background: rgba(255,255,255,0.2); padding: 6px 15px; border-radius: 12px; font-size: 15px; }
+        .notice-card { height: 140px; font-size: 32px; justify-content: center; }
+        .dl-btn { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 10px; font-size: 14px; }
 
-        /* --- 3. 管理端 UI --- */
-        .admin-box { background: #1a1a1a; color: white; padding: 40px 20px; display: flex; align-items: center; }
+        /* 3. 管理端 UI (黑底头像+功能键) */
+        .admin-header { background: #1a1a1a; color: white; padding: 40px 20px; display: flex; align-items: center; }
         .avatar { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #5dade2; margin-right: 20px; background: #333; }
-        
-        .menu-card {
-            background: #4a86b8; 
-            margin: 20px; 
-            border-radius: 15px; 
-            padding: 25px; 
-            position: relative;
-            color: white;
-            font-size: 18px;
+        .admin-item { 
+            background: #5dade2; margin: 20px; padding: 25px; border-radius: 15px; 
+            color: white; font-size: 18px; text-align: center; font-weight: bold; 
         }
-        .lock-icon { position: absolute; right: 20px; top: 25px; }
-        .danger-btn { color: #ff6b6b; text-align: left; padding: 20px; font-weight: bold; cursor: pointer; }
+        .danger-item { background: #e74c3c; margin: 20px; padding: 25px; border-radius: 15px; color: white; text-align: center; font-weight: bold; }
 
-        /* --- 4. 底部导航栏 --- */
+        /* 4. 底部导航栏 */
         .nav-bar { 
             position: fixed; bottom: 0; width: 100%; height: 75px; 
-            background: #ffffff; display: flex; justify-content: space-around; 
-            align-items: center; border-top: 1px solid #eee; z-index: 999;
+            background: #fff; display: flex; justify-content: space-around; 
+            align-items: center; border-top: 1px solid #eee; z-index: 1000;
         }
-        .nav-item { text-decoration: none; color: #333; font-size: 16px; font-weight: bold; flex: 1; text-align: center; }
+        .nav-item { text-decoration: none; color: #333; font-size: 16px; font-weight: bold; flex: 1; text-align: center; cursor: pointer; }
         .nav-item.active { color: #5dade2; }
     </style>
 </head>
 <body>
 
-    <div id="home" class="page active">
+    <div id="homePage" class="page active">
         <div class="top-title">心做资源库</div>
         <div class="blue-card notice-card">公 告</div>
-        <a href="https://www.bilibili.com" class="blue-card">
-            <span>bilibili</span>
-            <span>视频</span>
-        </a>
+        <a href="https://www.bilibili.com" class="blue-card"><span>bilibili</span><span>视频</span></a>
+        
         <a href="xinzuo_vpn.zip" class="blue-card">
-            <span>📦 我的应用软件</span>
-            <span class="tag-btn">下载</span>
+            <span>📦 资源下载链接</span>
+            <span class="dl-btn">下载</span>
         </a>
     </div>
 
-    <div id="shop" class="page"><div class="top-title">资源商店</div><p style="text-align:center;">暂无商品</p></div>
-    <div id="community" class="page"><div class="top-title">玩家社区</div><p style="text-align:center;">正在建设中...</p></div>
+    <div id="communityPage" class="page"><div class="top-title">玩家社区</div><p style="text-align:center;">共创者招募中...</p></div>
 
-    <div id="settings" class="page">
-        <div class="admin-box">
+    <div id="adminPage" class="page">
+        <div class="admin-header">
             <div class="avatar"></div>
             <div>
                 <div style="font-size:20px; font-weight:bold;">资源管理员</div>
-                <div style="font-size:13px; color:#888; margin-top:5px;">Lv.1 | 在线 0 分钟</div>
+                <div style="font-size:13px; color:#888;">Lv.1 | 在线 0 分钟</div>
             </div>
         </div>
-        
-        <div class="menu-card" onclick="alert('来自 zxcvbnm-uc.github.io 的网页显示：\n\n密码错误，无法进入！')">
-            资源管理后台 <span class="lock-icon">🔒 进入</span>
-        </div>
-        
-        <div class="danger-btn" onclick="confirm('确定要重置所有本地数据吗？')">重置所有数据</div>
+        <div class="admin-item" onclick="handleLogin()">资源管理后台 🔒 进入</div>
+        <div class="danger-item" onclick="confirm('确定要清空所有本地数据吗？')">清空本地数据</div>
     </div>
 
     <nav class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('home', this)">首页</div>
-        <div class="nav-item" onclick="switchTab('shop', this)">商店</div>
-        <div class="nav-item" onclick="switchTab('community', this)">社区</div>
-        <div class="nav-item" onclick="switchTab('settings', this)">设置</div>
-    </nav>
+        <div class="nav-item active" onclick="showTab('homePage', this)">首页</div>
+        <div class="nav-item" onclick="alert('商店筹备中...')">商店</div>
+        <div class="nav-item" onclick="showTab('communityPage', this)">社区</div>
+        <div class="nav-item" onclick="showTab('adminPage', this)">设置</div> </nav>
 
     <script>
-        function switchTab(tabId, el) {
-            // 切换页面显示
+        // 页面切换逻辑
+        function showTab(pageId, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            
-            // 切换导航高亮
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             el.classList.add('active');
-            
-            // 页面回到顶部
             window.scrollTo(0,0);
+        }
+
+        // 还原你的管理后台登录逻辑
+        function handleLogin() {
+            let pass = prompt("请输入管理员密码");
+            if(pass) {
+                alert("来自 zxcvbnm-uc.github.io 的网页显示：\n\n密码错误，无法进入！");
+            }
         }
     </script>
 </body>
