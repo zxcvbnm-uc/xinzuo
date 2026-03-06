@@ -5,209 +5,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心做资源库</title>
     <style>
-        /* --- 1. 全局样式 --- */
-        body { margin: 0; background: #ffffff; color: #333; font-family: "Microsoft YaHei", sans-serif; padding-bottom: 120px; overflow-x: hidden; }
-        .page-content { display: none; animation: fadeIn 0.3s ease; }
+        /* --- 1. 核心布局样式 --- */
+        body { margin: 0; background: #ffffff; color: #333; font-family: sans-serif; padding-bottom: 100px; }
+        .page-content { display: none; }
         .page-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- 2. 统一 UI 卡片 --- */
-        .top-header { background: #5dade2; margin: 15px; padding: 20px; border-radius: 25px; text-align: center; color: #ffffff; font-weight: bold; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .notice-card { background: #5dade2; margin: 15px; padding: 40px 20px; border-radius: 25px; text-align: center; color: #333; font-size: 32px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .group-box { background: #5dade2; margin: 15px; border-radius: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; }
-        .row-item { display: flex; justify-content: space-between; align-items: center; padding: 22px 20px; color: #000; font-size: 20px; font-weight: bold; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .row-item:last-child { border-bottom: none; }
-        .res-icon { width: 40px; height: 40px; background: #fff; border-radius: 10px; flex-shrink: 0; }
-        .dl-btn { color: #000; text-decoration: none; border-bottom: 2px solid #000; font-size: 18px; }
+        /* --- 2. 你的特色 UI (蓝色圆角风格) --- */
+        .top-header { background: #5dade2; margin: 15px; padding: 15px; border-radius: 20px; text-align: center; color: #fff; font-weight: bold; }
+        .card { background: #5dade2; margin: 15px; border-radius: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; }
+        .row { display: flex; justify-content: space-between; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); align-items: center; font-weight: bold; }
+        .row:last-child { border-bottom: none; }
+        .btn-dl { background: #fff; padding: 5px 15px; border-radius: 10px; text-decoration: none; color: #000; font-size: 14px; }
 
-        /* --- 3. 设置页专属 --- */
-        .profile-header { background: #1a1a1a; padding: 45px 20px; display: flex; align-items: center; gap: 20px; color: #ffffff; }
-        .avatar { width: 85px; height: 85px; background: #333; border-radius: 50%; border: 2px solid #5dade2; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .user-info { display: flex; flex-direction: column; gap: 5px; }
-        .lv-tag { font-size: 14px; color: #5dade2; }
+        /* --- 3. 设置页 & 管理框 --- */
+        .profile { background: #1a1a1a; padding: 40px 20px; display: flex; align-items: center; gap: 15px; color: #fff; }
+        .avatar { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #5dade2; background: #333; display: flex; align-items: center; justify-content: center; }
+        
+        /* 隐藏的上传框样式 */
+        #admin-panel { display: none; margin: 15px; padding: 20px; background: #fff; border: 3px dashed #5dade2; border-radius: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+        .btn-post { width: 100%; padding: 12px; background: #5dade2; color: #fff; border: none; border-radius: 10px; font-weight: bold; }
 
-        /* --- 4. 隐藏管理框样式 --- */
-        .admin-upload-area { background: #fff; margin: 10px; padding: 15px; border-radius: 15px; border: 2px dashed #1a1a1a; display: none; }
-        .admin-input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
-        .admin-btn { width: 100%; padding: 12px; background: #1a1a1a; color: #5dade2; border: none; border-radius: 10px; font-weight: bold; }
-
-        /* --- 5. 底部导航 --- */
-        .ios-nav { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; height: 70px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 35px; display: flex; align-items: center; justify-content: space-around; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid #eee; z-index: 2000; }
-        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #888; font-size: 12px; }
-        .nav-link.active { color: #007aff; }
-        .nav-icon { font-size: 24px; margin-bottom: 2px; }
+        /* --- 4. 底部导航 --- */
+        .nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; background: #fff; height: 60px; border-radius: 30px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .nav-item { text-decoration: none; color: #888; font-size: 14px; font-weight: bold; }
+        .nav-item.active { color: #5dade2; }
     </style>
 </head>
 <body>
 
     <div id="p-home" class="page-content active">
         <div class="top-header">心做资源库</div>
-        <div class="notice-card">公 告</div>
-        <div class="group-box" id="app-list">
-            </div>
+        <div class="card" style="padding: 40px; text-align: center; font-size: 30px;">公 告</div>
+        <div id="res-list"></div>
     </div>
 
     <div id="p-comm" class="page-content">
         <div class="top-header">社 区</div>
-        <div class="notice-card" style="font-size: 20px; padding: 60px 20px;">（当前功能还在测试）</div>
+        <div class="card" style="padding: 50px; text-align: center;">社区建设中...</div>
     </div>
 
     <div id="p-sett" class="page-content">
-        <div class="profile-header">
+        <div class="profile">
             <div class="avatar">头像</div>
-            <div class="user-info">
-                <div style="font-size: 20px; font-weight: bold;" id="user-name-display">游客用户</div>
-                <div class="lv-tag" id="lv-info">Lv.1 | 在线 0 分钟</div>
+            <div>
+                <div style="font-size: 18px; font-weight: bold;" id="u-name">游客用户</div>
+                <div style="font-size: 12px; color: #5dade2;">Lv.1 | 资源探索者</div>
             </div>
         </div>
 
-        <div id="admin-panel" class="admin-upload-area">
-            <p style="margin-top:0; font-weight:bold;">🛠️ 上传新资源</p>
-            <input type="text" id="new-name" class="admin-input" placeholder="输入应用名称">
-            <input type="text" id="new-url" class="admin-input" placeholder="输入下载链接或BV号">
-            <button class="admin-btn" onclick="saveResource()">立即发布</button>
+        <div id="admin-panel">
+            <h3 style="margin-top:0; color:#5dade2;">🚀 管理员上传工具</h3>
+            <div class="input-group"><input type="text" id="app-n" placeholder="应用名称"></div>
+            <div class="input-group"><input type="text" id="app-u" placeholder="链接 或 BV号"></div>
+            <button class="btn-post" onclick="doUpload()">立即发布到首页</button>
         </div>
 
-        <div class="group-box">
-            <div class="row-item" onclick="handleLogin()">
-                <span id="login-btn-text">管理员登录</span>
-                <span style="font-weight: normal; font-size: 14px; color: #666;">🔒</span>
+        <div class="card">
+            <div class="row" onclick="masterLogin()" id="login-row">
+                <span>管理员登录</span>
+                <span style="font-weight: normal; font-size: 12px;">🔒 登录开启权限</span>
             </div>
-            <div class="row-item"><span>QQ群：点击加入</span></div>
-            <div class="row-item" onclick="resetAll()" style="color: #c0392b; font-size: 16px;"><span>重置所有数据</span></div>
+            <div class="row"><span>QQ群：点击加入</span></div>
+            <div class="row" onclick="clearData()" style="color: #e74c3c;"><span>重置本地数据</span></div>
         </div>
     </div>
 
-    <nav class="ios-nav">
-        <a href="javascript:void(0)" class="nav-link active" onclick="goPage('p-home', this)">
-            <span class="nav-icon">🏠</span><span>首页</span>
-        </a>
-        <a href="javascript:void(0)" class="nav-link" onclick="goPage('p-comm', this)">
-            <span class="nav-icon">🌐</span><span>社区</span>
-        </a>
-        <a href="javascript:void(0)" class="nav-link" onclick="goPage('p-sett', this)">
-            <span class="nav-icon">⚙️</span><span>设置</span>
-        </a>
+    <nav class="nav">
+        <a href="javascript:void(0)" class="nav-item active" onclick="nav('p-home', this)">首页</a>
+        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-comm', this)">社区</a>
+        <a href="javascript:void(0)" class="nav-item" onclick="nav('p-sett', this)">设置</a>
     </nav>
 
     <script>
-        // --- 1. 核心配置：你的管理员账号 ---
-        const MASTER = { user: "xinzuo", pass: "123456" };
+        // --- 1. 配置：你的超级账号 ---
+        const MASTER_ID = "xinzuo";
+        const MASTER_PW = "123456"; // 建议以后改成更难的
 
-        // --- 2. 页面路由 ---
-        function goPage(pageId, el) {
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
+        // --- 2. 导航逻辑 ---
+        function nav(id, el) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
         }
 
-        // --- 3. 登录与权限逻辑 ---
-        function handleLogin() {
-            if(localStorage.getItem('is_admin') === 'true') {
-                if(confirm("确定退出管理员登录吗？")) {
-                    localStorage.removeItem('is_admin');
-                    location.reload();
-                }
-                return;
-            }
+        // --- 3. 登录变身逻辑 ---
+        function masterLogin() {
             let u = prompt("请输入管理员账号：");
-            let p = prompt("请输入密码：");
-            if(u === MASTER.user && p === MASTER.pass) {
-                localStorage.setItem('is_admin', 'true');
-                alert("欢迎回来，管理员心做！上传框已开启。");
-                location.reload();
+            let p = prompt("请输入管理员密码：");
+            if(u === MASTER_ID && p === MASTER_PW) {
+                localStorage.setItem('role', 'admin');
+                alert("登录成功！上传功能已在下方开启。");
+                initAdmin();
             } else {
-                alert("账号或密码错误");
+                alert("账号或密码不匹配。");
             }
         }
 
-        function checkIdentity() {
-            if(localStorage.getItem('is_admin') === 'true') {
+        function initAdmin() {
+            if(localStorage.getItem('role') === 'admin') {
                 document.getElementById('admin-panel').style.display = 'block';
-                document.getElementById('user-name-display').innerText = "管理员：心做";
-                document.getElementById('login-btn-text').innerText = "已登录 (点击退出)";
+                document.getElementById('u-name').innerText = "管理员：心做";
+                document.getElementById('login-row').innerHTML = "<span>身份状态</span><span style='color:#2ecc71'>已授权</span>";
             }
         }
 
-        // --- 4. 资源数据管理 ---
-        // 这里是你的正式资源列表
-        let officialApps = [
-            { name: "官方应用一", url: "BV1GJ411x7h7" }
+        // --- 4. 资源发布逻辑 ---
+        // 初始资源列表 (你可以随时在代码里增加)
+        let baseApps = [
+            { name: "应用一", url: "BV1GJ411x7h7" }
         ];
 
-        function renderResources() {
-            const list = document.getElementById('app-list');
-            list.innerHTML = "";
-            
-            // 合并正式数据和你在手机上临时上传的数据
-            let localUploads = JSON.parse(localStorage.getItem('temp_apps')) || [];
-            let all = [...officialApps, ...localUploads];
+        function render() {
+            const container = document.getElementById('res-list');
+            container.innerHTML = "";
+            let localApps = JSON.parse(localStorage.getItem('my_apps')) || [];
+            let all = [...baseApps, ...localApps];
 
             all.forEach(a => {
-                const row = document.createElement('div');
-                row.className = 'row-item';
-                row.innerHTML = `
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div class="res-icon"></div><span>${a.name}</span>
+                let card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="row">
+                        <div style="display:flex; align-items:center; gap:10px;"><div style="width:30px;height:30px;background:#fff;border-radius:5px;"></div>${a.name}</div>
+                        <a href="javascript:void(0)" onclick="go('${a.url}')" class="btn-dl">下载</a>
                     </div>
-                    <a href="javascript:void(0)" onclick="openUrl('${a.url}')" class="dl-btn">下载</a>
                 `;
-                list.appendChild(row);
+                container.appendChild(card);
             });
         }
 
-        function saveResource() {
-            const name = document.getElementById('new-name').value;
-            const url = document.getElementById('new-url').value;
-            if(name && url) {
-                let localUploads = JSON.parse(localStorage.getItem('temp_apps')) || [];
-                localUploads.push({ name, url });
-                localStorage.setItem('temp_apps', JSON.stringify(localUploads));
+        function doUpload() {
+            let n = document.getElementById('app-n').value;
+            let u = document.getElementById('app-u').value;
+            if(n && u) {
+                let list = JSON.parse(localStorage.getItem('my_apps')) || [];
+                list.push({name: n, url: u});
+                localStorage.setItem('my_apps', JSON.stringify(list));
                 alert("发布成功！");
-                document.getElementById('new-name').value = "";
-                document.getElementById('new-url').value = "";
-                renderResources();
-                goPage('p-home'); // 自动跳回首页查看
+                render();
+                nav('p-home', document.querySelectorAll('.nav-item')[0]); // 自动跳回首页看结果
             }
         }
 
-        function openUrl(u) {
+        function go(u) {
             window.location.href = u.startsWith('BV') ? `https://m.bilibili.com/video/${u}` : u;
         }
 
-        // --- 5. 经验等级逻辑 ---
-        let startTime = Date.now();
-        let userData = JSON.parse(localStorage.getItem('xz_data')) || { lv: 1, exp: 0, total: 0 };
-
-        function syncExp() {
-            let minutes = Math.floor((Date.now() - startTime) / 60000);
-            if(minutes > 0) {
-                userData.exp += minutes * 10;
-                userData.total += minutes;
-                userData.lv = Math.floor(userData.exp / 100) + 1;
-                localStorage.setItem('xz_data', JSON.stringify(userData));
-                startTime = Date.now();
-                updateLvUI();
-            }
+        function clearData() {
+            if(confirm("确定清除所有本地数据吗？")) { localStorage.clear(); location.reload(); }
         }
 
-        function updateLvUI() {
-            document.getElementById('lv-info').innerText = `Lv.${userData.lv} | 在线 ${userData.total} 分钟`;
-        }
-
-        function resetAll() {
-            if(confirm("确定要清空所有等级和本地资源吗？")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
-
-        // 初始化启动
-        checkIdentity();
-        renderResources();
-        updateLvUI();
-        setInterval(syncExp, 30000);
+        // 初始化
+        initAdmin();
+        render();
     </script>
 </body>
 </html>
