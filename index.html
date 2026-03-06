@@ -3,305 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>心做资源库</title>
+    <title>心做资源库 - iPhone Edition</title>
     <style>
         /* =========================================
-           1. 全局样式变量与基础
+           1. iOS 全局基础样式
            ========================================= */
         :root {
-            --bg-color: #ffffff;
-            --primary-blue: #5dade2;
-            --success-green: #2ecc71;
-            --admin-dark: #1a1a1a;
-            --text-main: #333333;
-            --danger-red: #e74c3c;
-            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --ios-blue: #007AFF;
+            --ios-green: #34C759;
+            --ios-bg: #F2F2F7;
+            --ios-card: #FFFFFF;
+            --admin-black: #000000;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
             margin: 0; 
-            padding: 0; 
-            background-color: var(--bg-color); 
-            color: var(--text-main);
-            font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--ios-bg); /* iPhone 标准背景色 */
+            color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
         }
 
         /* 页面切换动画 */
-        .page {
-            display: none;
-            min-height: 100vh;
-            padding-bottom: 100px;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page { display: none; min-height: 100vh; padding-bottom: 100px; animation: ios-slide 0.3s ease-out; }
         .page.active { display: block; }
+        @keyframes ios-slide { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
         /* =========================================
-           2. 用户端 UI 组件
+           2. 首页 (用户端) UI
            ========================================= */
-        .header-section {
-            padding: 30px 0;
-            text-align: center;
-        }
-        .main-title {
-            color: var(--success-green);
-            font-size: 30px;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
+        .ios-header { padding: 40px 20px 10px 20px; background: var(--ios-bg); }
+        .ios-title { font-size: 34px; font-weight: 800; color: var(--ios-green); letter-spacing: -1px; }
 
-        .container { padding: 0 20px; }
+        .container { padding: 15px; }
 
-        /* 蓝色大圆角卡片 */
-        .card {
-            background: var(--primary-blue);
-            border-radius: 30px;
-            margin-bottom: 20px;
-            padding: 25px;
-            color: white;
-            text-decoration: none;
+        /* iPhone 风格的大圆角卡片 */
+        .ios-card {
+            background: var(--ios-card);
+            border-radius: 20px;
+            margin-bottom: 15px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: #000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.2s;
         }
-        .card:active { transform: scale(0.97); }
+        .ios-card:active { transform: scale(0.96); background: #E5E5EA; }
 
-        .notice-card {
-            height: 160px;
-            justify-content: center;
-            font-size: 36px;
+        /* 公告专用卡片 */
+        .card-notice { 
+            height: 160px; 
+            background: #5dade2; 
+            color: white; 
+            justify-content: center; 
+            font-size: 32px; 
+            font-weight: bold; 
+            border: none;
+        }
+
+        .card-left { display: flex; align-items: center; }
+        .card-icon { width: 45px; height: 45px; border-radius: 10px; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .name-main { font-size: 18px; font-weight: 600; }
+        .name-sub { font-size: 13px; color: #8E8E93; }
+
+        .ios-btn {
+            background: #F2F2F7;
+            color: var(--ios-blue);
+            padding: 6px 16px;
+            border-radius: 20px;
             font-weight: bold;
-            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%);
-        }
-
-        .card-info { display: flex; align-items: center; }
-        .card-icon { font-size: 24px; margin-right: 15px; }
-        .card-name { font-size: 20px; font-weight: bold; }
-        .download-btn {
-            background: rgba(255, 255, 255, 0.25);
-            padding: 8px 18px;
-            border-radius: 15px;
             font-size: 14px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         /* =========================================
            3. 管理端 (设置) UI
            ========================================= */
-        .admin-profile {
-            background-color: var(--admin-dark);
-            padding: 50px 25px;
-            display: flex;
-            align-items: center;
-            color: white;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
+        .admin-page { background: #000; color: white; }
+        .admin-profile { padding: 60px 25px 30px 25px; display: flex; align-items: center; }
+        .admin-avatar { 
+            width: 70px; height: 70px; border-radius: 50%; 
+            background: #1C1C1E; border: 2px solid #5dade2; 
+            margin-right: 20px; overflow: hidden;
         }
-        .avatar-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #333;
-            border: 3px solid var(--primary-blue);
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .admin-meta { display: flex; flex-direction: column; }
-        .admin-name { font-size: 22px; font-weight: bold; margin-bottom: 5px; }
-        .admin-level { font-size: 13px; color: #888; }
+        .admin-info h2 { margin: 0; font-size: 22px; }
+        .admin-info p { margin: 5px 0 0 0; color: #8E8E93; font-size: 13px; }
 
-        .admin-menu { padding: 30px 20px; }
-        .menu-item {
-            background: var(--primary-blue);
-            color: white;
-            padding: 22px;
-            border-radius: 20px;
-            font-size: 18px;
-            font-weight: bold;
+        .admin-list { padding: 10px 15px; }
+        .list-item {
+            background: #1C1C1E;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            cursor: pointer;
+            font-weight: 500;
         }
-        .reset-btn {
-            color: var(--danger-red);
-            padding: 15px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 20px;
-            cursor: pointer;
-        }
+        .danger-text { color: #FF453A; text-align: center; width: 100%; display: block; padding: 15px; }
 
         /* =========================================
            4. 底部导航栏
            ========================================= */
-        .tab-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 85px;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #f0f0f0;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-            z-index: 1000;
+        .ios-tab-bar {
+            position: fixed; bottom: 0; width: 100%; height: 85px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px); /* 毛玻璃效果 */
+            display: flex; justify-content: space-around; padding-top: 10px;
+            border-top: 0.5px solid #C6C6C8; z-index: 1000;
         }
-        .tab-item {
-            flex: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #999;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .tab-item.active { color: var(--primary-blue); }
-        .tab-icon { font-size: 22px; margin-bottom: 4px; }
-        .tab-label { font-size: 14px; font-weight: bold; }
+        .tab-item { flex: 1; text-align: center; color: #8E8E93; cursor: pointer; }
+        .tab-item.active { color: var(--ios-blue); }
+        .tab-icon { font-size: 24px; display: block; }
+        .tab-label { font-size: 11px; margin-top: 3px; display: block; }
 
-        /* 商店与社区占位样式 */
-        .empty-state {
-            padding: 100px 20px;
-            text-align: center;
-            color: #ccc;
-        }
+        /* 正在井发中 (开发中) 样式 */
+        .dev-box { text-align: center; padding-top: 100px; color: #8E8E93; }
     </style>
 </head>
 <body>
 
-    <div id="homePage" class="page active">
-        <header class="header-section">
-            <div class="main-title">心做资源库</div>
-        </header>
-
+    <div id="home" class="page active">
+        <div class="ios-header">
+            <div class="ios-title">心做资源库</div>
+        </div>
+        
         <div class="container">
-            <div class="card notice-card">公 告</div>
+            <div class="ios-card card-notice">公 告</div>
 
-            <a href="https://space.bilibili.com" class="card">
-                <div class="card-info">
-                    <span class="card-icon">📺</span>
-                    <span class="card-name">B站官方频道</span>
+            <a href="https://www.bilibili.com" class="ios-card">
+                <div class="card-left">
+                    <div class="card-icon" style="background:#FFFBFA;">📺</div>
+                    <div>
+                        <div class="name-main">Bilibili 视频</div>
+                        <div class="name-sub">查看官方演示视频</div>
+                    </div>
                 </div>
-                <div class="download-btn">点击跳转</div>
+                <div class="ios-btn">查看</div>
             </a>
 
-            <a href="xinzuo_vpn.zip" class="card">
-                <div class="card-info">
-                    <span class="card-icon">📦</span>
-                    <span class="card-name">心做资源应用</span>
+            <a href="xinzuo_vpn.zip" class="ios-card">
+                <div class="card-left">
+                    <div class="card-icon" style="background:#F0F9FF;">📦</div>
+                    <div>
+                        <div class="name-main">心做 VPN 安装包</div>
+                        <div class="name-sub">版本 1.0.2 | 24MB</div>
+                    </div>
                 </div>
-                <div class="download-btn">下载 APK</div>
+                <div class="ios-btn">下载</div>
             </a>
         </div>
     </div>
 
-    <div id="shopPage" class="page">
-        <header class="header-section"><div class="main-title">资源商店</div></header>
-        <div class="empty-state"><h3>暂无上架资源</h3><p>商店功能正在紧急开发中...</p></div>
+    <div id="community" class="page">
+        <div class="ios-header"><div class="ios-title">社区</div></div>
+        <div class="dev-box">
+            <span style="font-size: 60px;">🚧</span>
+            <h3>正在井发中...</h3>
+            <p>敬请期待更精彩的交流空间</p>
+        </div>
     </div>
 
-    <div id="communityPage" class="page">
-        <header class="header-section"><div class="main-title">共创社区</div></header>
-        <div class="empty-state"><h3>快手/QQ群组</h3><p>点击下方设置查看联系方式</p></div>
-    </div>
-
-    <div id="settingsPage" class="page">
+    <div id="settings" class="page admin-page">
         <div class="admin-profile">
-            <div class="avatar-circle">
-                <span style="font-size:30px;color:white;">头</span>
-            </div>
-            <div class="admin-meta">
-                <span class="admin-name">资源管理员</span>
-                <span class="admin-level">Lv.1 | 在线 0 分钟</span>
+            <div class="admin-avatar"></div>
+            <div class="admin-info">
+                <h2>资源管理员</h2>
+                <p>Lv.1 | 在线 0 分钟</p>
             </div>
         </div>
 
-        <div class="admin-menu">
-            <div class="menu-item" onclick="triggerLoginError()">
+        <div class="admin-list">
+            <div class="list-item" onclick="adminLogin()">
                 <span>资源管理后台</span>
-                <span>🔒 进入</span>
+                <span style="color:#8E8E93;">🔒 锁入 ></span>
             </div>
-
-            <div class="menu-item" style="background:#4a90e2;">
-                <span>QQ群：点击加入</span>
-                <span>👥</span>
+            <div class="list-item">
+                <span>清除缓存</span>
+                <span style="color:#8E8E93;">12.4 MB</span>
             </div>
-
-            <div class="reset-btn" onclick="handleDataReset()">重置所有本地数据</div>
+            <div class="list-item" onclick="location.reload()" style="justify-content:center;">
+                <span class="danger-text">重置所有本地数据</span>
+            </div>
         </div>
     </div>
 
-    <nav class="tab-bar">
-        <div class="tab-item active" onclick="switchPage('homePage', this)">
+    <nav class="ios-tab-bar">
+        <div class="tab-item active" onclick="switchPage('home', this)">
             <span class="tab-icon">🏠</span><span class="tab-label">首页</span>
         </div>
-        <div class="tab-item" onclick="switchPage('shopPage', this)">
+        <div class="tab-item" onclick="alert('商店暂未开放')">
             <span class="tab-icon">🛒</span><span class="tab-label">商店</span>
         </div>
-        <div class="tab-item" onclick="switchPage('communityPage', this)">
+        <div class="tab-item" onclick="switchPage('community', this)">
             <span class="tab-icon">💬</span><span class="tab-label">社区</span>
         </div>
-        <div class="tab-item" onclick="switchPage('settingsPage', this)">
+        <div class="tab-item" onclick="switchPage('settings', this)">
             <span class="tab-icon">⚙️</span><span class="tab-label">设置</span>
         </div>
     </nav>
 
     <script>
-        /* =========================================
-           5. 交互逻辑
-           ========================================= */
-
-        // 页面切换
-        function switchPage(pageId, element) {
-            // 切换 active 类
+        // 1. 页面切换逻辑
+        function switchPage(pageId, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-
-            // 导航高亮
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            element.classList.add('active');
-
-            // 震动反馈 (部分手机支持)
-            if (navigator.vibrate) navigator.vibrate(10);
+            el.classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        // 还原特定的报错弹窗
-        function triggerLoginError() {
-            let input = prompt("请输入管理员权限密码：");
-            if(input !== null) {
-                // 1:1 还原你截图中出现的文字内容
+        // 2. 1:1 还原你截图里的管理端登录逻辑
+        function adminLogin() {
+            let pass = prompt("请输入管理员权限密码：");
+            if(pass !== null) {
+                // 精准还原报错文字
                 alert("来自 zxcvbnm-uc.github.io 的网页显示：\n\n密码错误，无法进入！");
             }
         }
-
-        // 重置数据
-        function handleDataReset() {
-            if(confirm("确定要清空所有本地缓存数据吗？此操作不可逆。")) {
-                alert("清理完成！");
-                location.reload();
-            }
-        }
-
-        // 初始化加载
-        window.onload = function() {
-            console.log("心做资源库已启动...");
-        };
     </script>
 </body>
 </html>
