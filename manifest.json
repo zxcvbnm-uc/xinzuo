@@ -1,0 +1,15 @@
+{
+    "name": "心做资源库",
+    "short_name": "心做资源",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ff9966",
+    "icons": [
+        {
+            "src": "https://zxcvbnm-uc.github.io/xinzuo/icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
