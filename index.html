@@ -175,7 +175,19 @@
             text-align: center; padding: 160px 30px; color: var(--text-grey); 
         }
     </style>
-</head>
+
+    <style>
+    @keyframes breath { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+    .ios-card { backdrop-filter: blur(15px); background: rgba(255,255,255,0.7) !important; transition: all 0.3s ease; }
+    .ios-card:active { transform: scale(0.96); }
+    .fortune-tag { 
+        background: linear-gradient(135deg, #ff9966, #ff5e62); 
+        color: white; padding: 10px; border-radius: 15px; 
+        margin: 10px 20px; text-align: center; font-weight: bold;
+        animation: breath 3s infinite;
+    }
+    </style>
+    </head>
 <body>
 
     <div id="homePage" class="page active">
@@ -183,7 +195,7 @@
             <h1 class="ios-title">心做资源库</h1>
         </div>
         
-        <div class="content-wrap">
+        <div class="content-wrap"><div class="fortune-tag">🌟 今日运势：宜写代码，忌改 BUG</div>
             <div class="ios-card card-announcement">公 告</div>
 
             <a href="https://www.bilibili.com" class="ios-card">
