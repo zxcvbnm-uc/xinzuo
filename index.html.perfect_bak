@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>心做资源库</title>
+    <style>
+        /* =========================================
+           1. iOS 系统级设计语言
+           ========================================= */
+        :root {
+            --ios-bg: #F2F2F7;
+            --ios-green: #34C759;
+            --ios-blue: #007AFF;
+            --ios-card: #FFFFFF;
+            --admin-dark: #000000;
+            --text-grey: #8E8E93;
+            --card-radius: 22px;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            margin: 0; padding: 0;
+        }
+        
+        body { 
+            background-color: var(--ios-bg); 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        /* 页面平滑过渡动画 */
+        .page { 
+            display: none; 
+            min-height: 100vh; 
+            padding-bottom: 120px; 
+            animation: ios-move 0.35s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .page.active { display: block; }
+        @keyframes ios-move { 
+            from { opacity: 0; transform: scale(0.98) translateY(10px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+
+        /* =========================================
+           2. 首页 (用户端) UI
+           ========================================= */
+        .ios-header { 
+            padding: 50px 20px 15px 20px; 
+            background: var(--ios-bg);
+            position: sticky; top: 0; z-index: 50;
+        }
+        .ios-title { 
+            font-size: 36px; 
+            font-weight: 800; 
+            color: var(--ios-green); /* 还原你的绿色标题 */
+            letter-spacing: -1.5px; 
+        }
+
+        .content-wrap { padding: 12px 18px; }
+
+        /* iPhone 圆角大卡片 */
+        .ios-card {
+            background: var(--ios-card);
+            border-radius: var(--card-radius);
+            margin-bottom: 18px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: all 0.2s;
+        }
+        .ios-card:active { transform: scale(0.95); background: #EBEBEB; }
+
+        /* 顶部公告：手绘稿中的超大蓝色块 */
+        .card-announcement { 
+            height: 170px; 
+            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%); 
+            color: white; 
+            justify-content: center; 
+            font-size: 38px; 
+            font-weight: 900; 
+            border: none;
+            letter-spacing: 6px;
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .card-main-content { display: flex; align-items: center; gap: 15px; }
+        .icon-box { 
+            width: 50px; height: 50px; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; font-size: 28px; 
+        }
+        
+        .title-text { font-size: 20px; font-weight: 700; display: block; }
+        .subtitle-text { font-size: 13px; color: var(--text-grey); margin-top: 3px; }
+
+        .ios-badge {
+            background: #F2F2F7;
+            color: var(--ios-blue);
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           3. 管理端 (设置) UI
+           ========================================= */
+        .admin-page { background: var(--admin-dark); color: white; }
+        .admin-user-info { 
+            padding: 60px 25px 35px 25px; 
+            display: flex; 
+            align-items: center; 
+            border-bottom: 0.5px solid #2C2C2E;
+        }
+        .admin-avatar-frame { 
+            width: 75px; height: 75px; border-radius: 50%; 
+            background: #1C1C1E; border: 2px solid #5dade2; 
+            margin-right: 20px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 15px rgba(93, 173, 226, 0.4);
+        }
+        .admin-detail h2 { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+        .admin-detail p { color: var(--text-grey); font-size: 14px; }
+
+        .admin-list { padding: 15px; }
+        .admin-item {
+            background: #1C1C1E;
+            padding: 22px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .admin-item:active { background: #2C2C2E; }
+        
+        .danger-trigger { 
+            margin-top: 40px; 
+            color: #FF453A; 
+            text-align: center; 
+            padding: 18px; 
+            font-weight: bold;
+            border: 1px dashed #333;
+            border-radius: 16px;
+        }
+
+        /* =========================================
+           4. 底部 iOS 导航栏
+           ========================================= */
+        .ios-tab-bar {
+            position: fixed; bottom: 0; width: 100%; height: 95px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
+            display: flex; justify-content: space-around; 
+            padding-top: 15px;
+            border-top: 0.5px solid rgba(0,0,0,0.1); 
+            z-index: 1000;
+        }
+        .tab-btn { flex: 1; text-align: center; color: var(--text-grey); transition: 0.25s; text-decoration: none; cursor: pointer;}
+        .tab-btn.active { color: var(--ios-blue); transform: translateY(-2px); }
+        .tab-btn-icon { font-size: 24px; margin-bottom: 5px; display: block; }
+        .tab-btn-label { font-size: 11px; font-weight: 700; }
+
+        /* 开发中提示 [井发中] */
+        .dev-container { 
+            text-align: center; padding: 160px 30px; color: var(--text-grey); 
+        }
+    </style>
+
+    <style>
+    @keyframes breath { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+    .ios-card { backdrop-filter: blur(15px); background: rgba(255,255,255,0.7) !important; transition: all 0.3s ease; }
+    .ios-card:active { transform: scale(0.96); }
+    .fortune-tag { 
+        background: linear-gradient(135deg, #ff9966, #ff5e62); 
+        color: white; padding: 10px; border-radius: 15px; 
+        margin: 10px 20px; text-align: center; font-weight: bold;
+        animation: breath 3s infinite;
+    }
+    </style>
+    </head>
+<body>
+
+    <div id="homePage" class="page active">
+        <div class="ios-header">
+            <h1 class="ios-title">心做资源库</h1>
+        </div>
+        
+        <div class="content-wrap"><div class="fortune-tag">🌟 今日运势：宜写代码，忌改 BUG</div>
+            <div class="ios-card card-announcement">公 告</div>
+
+            <a href="https://www.bilibili.com" class="ios-card">
+                <div class="card-main-content">
+                    <div class="icon-box" style="background:#FFF0F0;">📺</div>
+                    <div>
+                        <span class="title-text">Bilibili 视频</span>
+                        <span class="subtitle-text">观看最新资源动态演示</span>
+                    </div>
+                </div>
+                <div class="ios-badge">去观看</div>
+            </a>
+
+            <a href="#" class="ios-card" onclick="alert('你尚未设置新的下载链接')">
+                <div class="card-main-content">
+                    <div class="icon-box" style="background:#F0F7FF;">📦</div>
+                    <div>
+                        <span class="title-text">应用资源下载</span>
+                        <span class="subtitle-text">支持 APK/ZIP 多格式下载</span>
+                    </div>
+                </div>
+                <div class="ios-badge">获取</div>
+            </a>
+        </div>
+    </div>
+
+    <div id="communityPage" class="page">
+        <div class="ios-header"><h1 class="ios-title">社区</h1></div>
+        <div class="dev-container">
+            <div style="font-size: 90px; margin-bottom: 25px;">🛠️</div>
+            <h2 style="color:#000; margin-bottom: 10px;">正在井发中...</h2>
+            <p>我们正在努力构建一个自由交流的社区空间</p>
+        </div>
+    </div>
+
+    <div id="adminPage" class="page admin-page">
+        <div class="admin-user-info">
+            <div class="admin-avatar-frame">
+                <span style="font-size:35px;">👤</span>
+            </div>
+            <div class="admin-detail">
+                <h2>资源管理员</h2>
+                <p>Lv.1 | 累计在线 0 分钟</p>
+            </div>
+        </div>
+
+        <div class="admin-list">
+            <div class="admin-item" onclick="triggerAdminLogin()">
+                <div style="display:flex; align-items:center; gap:12px;">🔐 资源管理后台</div>
+                <span style="color:var(--text-grey);">锁入 ></span>
+            </div>
+            
+            <div class="admin-item">
+                <div style="display:flex; align-items:center; gap:12px;">📈 服务器状态</div>
+                <span style="color:#34C759;">运行中</span>
+            </div>
+
+            <div class="danger-trigger" onclick="handleWipeData()">
+                重置所有本地数据
+            </div>
+        </div>
+    </div>
+
+    <nav class="ios-tab-bar">
+        <div class="tab-btn active" onclick="navigate('homePage', this)">
+            <span class="tab-btn-icon">🏠</span><span class="tab-btn-label">首页</span>
+        </div>
+        <div class="tab-btn" onclick="alert('商店筹备中，暂未开启')">
+            <span class="tab-btn-icon">🛒</span><span class="tab-btn-label">商店</span>
+        </div>
+        <div class="tab-btn" onclick="navigate('communityPage', this)">
+            <span class="tab-btn-icon">💬</span><span class="tab-label">社区</span>
+        </div>
+        <div class="tab-btn" onclick="navigate('adminPage', this)">
+            <span class="tab-btn-icon">⚙️</span><span class="tab-btn-label">设置</span>
+        </div>
+    </nav>
+
+    <script>
+        // 核心页面切换引擎
+        function navigate(pageId, element) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // 显示选定页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 处理导航按钮状态
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            
+            // 滚动回顶部
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // 还原特定的管理端报错逻辑
+        function triggerAdminLogin() {
+            let secret = prompt("资源库管理员权限验证：");
+            if(secret !== null) {
+                // 1:1 还原你截图里的系统对话框文字
+                alert("来自 zxcvbnm-uc.github.io 的网页显示：\n\n密码错误，无法进入！");
+            }
+        }
+
+        // 数据重置提示
+        function handleWipeData() {
+            if(confirm("确定要执行「重置」操作吗？所有本地配置将丢失。")) {
+                alert("清理完成！");
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
