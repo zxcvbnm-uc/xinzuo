@@ -1,0 +1,25 @@
+name: 每日资源自动更新
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # 每天 UTC 4:00 (北京时间 12:00) 自动执行
+  workflow_dispatch:      # 允许董事长在后台手动点火启动
+
+jobs:
+  update-resources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 运行影子采集器
+        run: |
+          chmod +x mini_claw.sh
+          ./mini_claw.sh
+
+      - name: 检测变动并同步云端
+        run: |
+          git config --global user.name "XinZuo-Bot"
+          git config --global user.email "bot@xinzuo.tech"
+          git add index.html
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto: 每日资源链路检查完成" && git push)
