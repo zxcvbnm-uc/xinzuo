@@ -1,89 +1,73 @@
-/* 基础重置 */
+:root {
+    --primary: #6366f1;
+    --bg: #f8fafc;
+    --card-bg: rgba(255, 255, 255, 0.8);
+}
+
 body {
-    background-color: #f7f8fa;
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
     margin: 0;
-    padding: 0;
-    font-family: -apple-system, system-ui, sans-serif;
-    padding-bottom: 70px; /* 留出底部导航的高度，防止遮挡内容 */
+    padding: 20px;
+    color: #1e293b;
 }
 
-/* 顶部蓝色区域 */
-.header {
-    background: #007aff;
-    color: white;
-    padding: 30px 20px;
-    text-align: left;
-}
-.header h1 { margin: 0; font-size: 24px; }
-.header p { margin: 5px 0 0; font-size: 14px; opacity: 0.9; }
-
-/* 内容容器 */
 .container {
-    padding: 15px;
-    margin-top: -15px;
-    background: #f7f8fa;
-    border-radius: 20px 20px 0 0;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-/* 公告栏 */
-.notice-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom: 15px;
+header {
+    text-align: center;
+    padding: 40px 0;
 }
 
-/* 软件列表卡片 */
-.software-card {
-    background: #fff;
-    border-radius: 15px;
-    padding: 18px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+h1 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    color: #334155;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.name { font-weight: bold; font-size: 16px; }
+.resource-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
 
-/* 蓝色获取按钮 */
-.get-btn {
-    background: #007aff;
-    color: #fff;
-    border: none;
-    padding: 8px 20px;
+.resource-card:hover {
+    transform: translateY(-5px);
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 12px;
     border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
-/* 底部导航栏：像微信QQ一样横向排列 */
-.footer-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: #ffffff;
-    display: flex; /* 横向排列 */
-    border-top: 1px solid #eeeeee;
-    z-index: 9999;
-}
+/* 不同类别的正式配色 */
+.tag-soft { background: #e0e7ff; color: #4338ca; }
+.tag-movie { background: #fef2f2; color: #b91c1c; }
 
-.nav-item {
-    flex: 1; /* 平分宽度 */
-    display: flex;
-    flex-direction: column; /* 图标在上文字在下 */
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #8e8e93;
+.btn-download {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--primary);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
     text-decoration: none;
-}
-
-.nav-item.active {
-    color: #007aff;
+    margin-top: 15px;
+    font-weight: 500;
 }
