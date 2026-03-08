@@ -1,28 +1,22 @@
 #!/bin/bash
-read -p "📝 软件名称: " NAME
-read -p "🔢 版本号: " VER
-read -p "📋 动态: " LOG
-read -p "🔗 链接: " LINK
+# 心做科技·直达发布引擎 v1.5
 
-COLORS=("#9C27B0" "#2196F3" "#4CAF50" "#FF9800" "#E91E63")
-SELECTED_COLOR=${COLORS[$RANDOM % 5]}
+# 1. 采集输入信息
+read -p "请输入资源名称: " NAME
+read -p "请输入标签(如 游戏/工具): " TAG
+read -p "请输入简短描述: " DESC
+read -p "请输入官方跳转链接: " LINK
 
-# 构造新卡片
-NEW_CARD="<div style='margin:15px 0; border:2px solid $SELECTED_COLOR; border-radius:10px; padding:15px; background:white; box-shadow: 3px 3px 10px #eee;'>
-  <h3 style='margin-top:0; color:$SELECTED_COLOR;'>📦 $NAME</h3>
-  <p style='color:#666; font-size:14px;'><b>版本：</b>v$VER</p>
-  <p style='color:#666; font-size:14px;'><b>动态：</b>$LOG</p>
-  <a href='$LINK' style='display:inline-block; padding:8px 20px; background:$SELECTED_COLOR; color:white; text-decoration:none; border-radius:5px; font-size:12px;'>立即获取</a>
-</div>"
+# 2. 构造具备直达能力的正式卡片模板
+NEW_CARD="
+            <div class=\"resource-card\">
+                <div class=\"tag tag-soft\">$TAG</div>
+                <h3>$NAME</h3>
+                <p>$DESC</p>
+                <a href=\"$LINK\" target=\"_blank\" class=\"btn-download\">直接访问官网</a>
+            </div>"
 
-# 使用更简单的追加方式：直接把新内容贴在容器下方
-# 我们先备份 index.html，然后重新组合它
-head -n $(grep -n '<div id="app-container">' index.html | cut -d: -f1) index.html > tmp.html
-echo "$NEW_CARD" >> tmp.html
-tail -n +$(( $(grep -n '<div id="app-container">' index.html | cut -d: -f1) + 1 )) index.html >> tmp.html
-mv tmp.html index.html
+# 3. 将新卡片精准插入到列表顶端
+sed -i "/<main id=\"resource-list\">/a $NEW_CARD" index.html
 
-git add index.html
-git commit -m "CEO: 智能追加发布 $NAME"
-git push
-echo "✅ 汇报董事长：$NAME 已平稳上架，无报错！"
+echo "✅ 汇报董事长：$NAME 已完成‘直达协议’对接，准备同步云端！"
