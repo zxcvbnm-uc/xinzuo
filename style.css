@@ -1,73 +1,58 @@
 :root {
-    --primary: #6366f1;
-    --bg: #f8fafc;
-    --card-bg: rgba(255, 255, 255, 0.8);
+    --bg-dark: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --accent: #38bdf8;
+    --text: #f1f5f9;
 }
 
 body {
-    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
+    background: var(--bg-dark);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
     margin: 0;
     padding: 20px;
-    color: #1e293b;
+    display: flex;
+    justify-content: center;
 }
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-}
+.container { width: 100%; max-width: 500px; }
 
-header {
-    text-align: center;
-    padding: 40px 0;
-}
-
-h1 {
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    color: #334155;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+header { text-align: center; padding: 30px 0; border-bottom: 1px solid #1e293b; margin-bottom: 30px; }
+header h1 { font-size: 1.5rem; letter-spacing: 2px; color: var(--accent); }
 
 .resource-card {
     background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 20px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 18px;
     margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-.resource-card:hover {
-    transform: translateY(-5px);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
 }
 
 .tag {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    background: var(--accent);
+    color: #000;
+    margin-bottom: 8px;
     font-weight: bold;
-    margin-bottom: 10px;
-    text-transform: uppercase;
 }
-
-/* 不同类别的正式配色 */
-.tag-soft { background: #e0e7ff; color: #4338ca; }
-.tag-movie { background: #fef2f2; color: #b91c1c; }
 
 .btn-download {
     display: block;
     width: 100%;
+    background: #1e293b;
+    color: var(--accent);
+    border: 1px solid var(--accent);
     text-align: center;
-    background: var(--primary);
-    color: white;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 6px;
     text-decoration: none;
     margin-top: 15px;
-    font-weight: 500;
+    transition: 0.3s;
 }
+
+.btn-download:hover { background: var(--accent); color: #000; }
